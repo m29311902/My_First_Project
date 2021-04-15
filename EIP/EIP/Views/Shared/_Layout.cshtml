@@ -1,0 +1,811 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @*引用Fontawesome*@
+    <link href="~/Content/fontawesome-all.css" rel="stylesheet" />
+    @*引用SweetAlert*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous"></script>
+    @*引用城市選擇器*@
+    <script src="~/Scripts/src/tw-city-selector.min.js"></script>
+    @*頁碼*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.5/pagination.css" integrity="sha512-QmxybGIvkSI8+CGxkt5JAcGOKIzHDqBMs/hdemwisj4EeGLMXxCm9h8YgoCwIvndnuN1NdZxT4pdsesLXSaKaA==" crossorigin="anonymous" />
+    @*semantic*@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    @*引用Logo字體*@
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Fredericka+the+Great&family=Monoton&display=swap" rel="stylesheet">
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        body {
+            padding: 0;
+            background-color: #E0E0E0;
+            font-weight: bolder;
+        }
+
+        .logofont {
+            /* font-family: 'Allura', cursive;*/
+            font-size: 40px;
+            font-family: 'Fredericka the Great', cursive;
+            display:none;
+        }
+
+        .AlertBell {
+            margin-left: -200px;
+        }
+
+        select {
+            max-width: 100%;
+        }
+        /*.fade {
+                opacity: 1;
+            }
+
+            .askforleave {
+                border: 2px solid black;
+                border-radius: 20px;
+                margin: auto;
+                width: 800px;
+            }
+
+            .btnSend {
+                width: 280px;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .pointer {
+                cursor: pointer;*/ /*如果想要用手指效果就+這個class*/
+        /*}*/
+        /*以下是SweetAlert2的套件樣式*/
+        .modalbody {
+            background-color: #F0F0F0;
+        }
+
+
+        .space {
+            justify-content: space-evenly;
+        }
+
+        #nav-Add {
+            background-color: white;
+            /*  box-shadow:0px 5px 15px ;*/
+        }
+
+        .TotalEMP {
+            border-radius: 5px 5px 0 0;
+            margin-bottom: -1px;
+        }
+
+        .TotalWrap {
+            border-radius: 0 0 10px 10px;
+        }
+        /*Yuan*/
+        .head {
+            margin-top: 50px;
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 25px;
+            background-color: white;
+            box-shadow: 0 1px 7px;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        input, textarea {
+            max-width: 100%;
+        }
+
+
+        .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+            background-color: lightyellow;
+        }
+
+        .table {
+            background-color: white;
+            padding: 5px;
+            box-shadow: 0 1px 7px;
+        }
+
+        th {
+            /*        border: 1px solid white;*/
+            text-align: center;
+            background-color: #444444;
+            color: white;
+            font-size: 1.2em;
+        }
+
+        td {
+            line-height: 50px;
+            color: black;
+        }
+
+        th, td {
+            text-align: center;
+            padding: 5px;
+        }
+
+        .h2共用 {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid silver;
+        }
+
+        .加班 {
+            background-color: transparent;
+            border: none;
+        }
+
+        .加班1 {
+            border-top: none;
+        }
+        /*偶數*/
+        /*tr:nth-child(even) {
+            background-color: aliceblue;
+        }*/
+        /*奇數*/
+        /*tr:nth-child(odd) {
+            background-color: azure;
+        }*/
+        /*詳細按鈕css*/
+        .button {
+            border-radius: 4px;
+            /*        border: none;*/
+            /*        color: #0066FF;*/
+            color: black;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.2em;
+            padding: 10px;
+            width: 100px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: 3px;
+        }
+
+            .button span {
+                cursor: pointer;
+                display: inline-block;
+                position: relative;
+                transition: 0.15s;
+            }
+
+                .button span:after {
+                    content: '\00bb';
+                    position: absolute;
+                    opacity: 0;
+                    top: 0;
+                    right: -20px;
+                    transition: 0.001s;
+                }
+
+            .button:hover span {
+                padding-right: 25px;
+            }
+
+                .button:hover span:after {
+                    opacity: 1;
+                    right: 0;
+                }
+
+        .規定 {
+            border-radius: 10px;
+        }
+
+        .加班法規 {
+            text-align: center;
+            font-size: 1.6em;
+        }
+
+        .加班法規內文 {
+            line-height: 150%;
+            text-align: justify;
+            text-justify: inter-ideograph;
+        }
+        .TitleImg {
+            width: 200px;
+            height: 60px;
+        }
+        /*互動式視窗置中*/
+        #UserProfile {
+            height: auto;
+            top: auto;
+            left: auto;
+            bottom: auto;
+            right: auto;
+            width: 400px;
+        }
+
+        .formlbl {
+            font-size: 20px !important;
+        }
+
+        .nohover {
+            pointer-events: none;
+        }
+
+        .AlerBellOut {
+            /*top: 3%;
+            position: fixed;
+            right: 3%;*/
+            /*            background-color: #FCFCFC;
+            border: 1px solid white;
+            border-radius: 50% 50% 50% 50%;*/
+            /*padding: 1% 1%;*/
+            align-self: center;
+        }
+
+        .centermodal {
+            height: auto;
+            top: auto;
+            left: auto;
+            bottom: auto;
+            right: auto;
+        }
+
+        .modal-backdrop {
+            z-index: -1;
+        }
+
+        .HomePic {
+            background-color: #4F4F4F;
+        }
+
+        .bottomdiv {
+            justify-content: space-evenly;
+        }
+
+        .alertword {
+            font-size: 16px;
+        }
+
+        .CookieName {
+            margin-left: -10px;
+        }
+
+        .searchbtn {
+            border: 0px;
+            border-radius: 25% 25%;
+            margin-left: -15px;
+        }
+        /*  測試table*/
+        .rwd-table {
+            background: #fff;
+            overflow: hidden;
+        }
+
+            .rwd-table tr:nth-of-type(2n) {
+                background: #eee;
+            }
+
+            .rwd-table th,
+            .rwd-table td {
+                margin: 0.5em 1em;
+            }
+
+        .rwd-table {
+            min-width: 100%;
+        }
+
+            .rwd-table th {
+                display: none;
+            }
+
+            .rwd-table td {
+                display: block;
+            }
+
+                .rwd-table td:before {
+                    content: attr(data-th)":";
+                    font-weight: bold;
+                    width: 6.5em;
+                    display: inline-block;
+                }
+
+            .rwd-table th, .rwd-table td {
+                text-align: left;
+            }
+
+                .rwd-table th, .rwd-table td:before {
+                    font-weight: bold;
+                }
+
+        @@media (min-width: 975px) {
+            .rwd-table td:before {
+                display: none;
+            }
+         
+            .rwd-table th, .rwd-table td {
+                display: table-cell;
+                padding: 0.25em 0.5em;
+            }
+
+                .rwd-table th:first-child,
+                .rwd-table td:first-child {
+                    padding-left: 0;
+                }
+
+                .rwd-table th:last-child,
+                .rwd-table td:last-child {
+                    padding-right: 0;
+                }
+
+            .rwd-table th,
+            .rwd-table td {
+                padding: 1em !important;
+            }
+        }
+        /*    rwdtable*/
+        .centerlogo {
+            width: 15%;
+        }
+        .natbg {
+            background: linear-gradient(white,#BEBEBE ) !important;
+            box-shadow: 3px 3px 12px gold !important;
+            
+            text-shadow: 0px 0px 1px black;
+        }
+
+        .disapear {
+            opacity: 0;
+        }
+        @@media (min-width: 1525px) {
+        .logofont {
+                display: block;
+            } 
+
+        }
+  
+    </style>
+</head>
+<body>
+    <div class="ui top attached menu equal width grid natbg">
+        <a class="item slidermenu ">
+            <img src="~/images/EIPLOGO.png" />
+            <span class="font-weight-bold ml-2">功能選單</span>
+        </a>
+
+
+        <div class="d-flex align-self-center alertword font-weight-bold">
+            <span>您好</span><i class="exclamation icon grey"></i><span class="CookieName ml-1"></span><span class="ml-3">歡迎回來</span><i class="exclamation icon grey"></i>
+            <p class="CookieAuth" hidden></p>
+        </div>
+        <div class="centerlogo mt-1 mb-1 mx-auto align-self-center">
+            <span class="logofont text-nowrap">Generative Transcendent System</span>
+        </div>
+
+        <div class="align-self-center ml-auto">
+            <div class="ui dropdown topbell text-nowrap">
+                <div class="default text text-success alertnumber">通知訊息</div>
+                <div class="menu AlertBell"></div>
+            </div>
+        </div>
+        @*<div class="align-self-center">
+            <div class="CookieID" hidden></div>
+            <div class="ui buttons w-100 grey">
+                <button class="ui labeled icon button nohover text-nowrap" title="權限">
+                    <i class="left user icon"></i>
+                    <p class="CookieAuth"></p>
+                </button>
+                <button class="ui labeled icon button NameClick text-nowrap" title="員工姓名">
+                    <i class="address card icon"></i>
+                    <p class="CookieName"></p>
+                </button>
+                <button class="ui right labeled icon button Logout text-nowrap" title="登出">
+                    登出
+                    <i class="icon sign-out"></i>
+                </button>
+            </div>
+        </div>*@
+        <button class="ui grey button Logout text-nowrap" title="登出">
+            <i class="icon sign-out"></i>
+            登出
+        </button>
+    </div>
+
+
+    <div class="ui bottom attached segment pushable">
+        <div class="ui inverted labeled icon left inline vertical sidebar menu menus" style="">
+            <a class="item" href="@Url.Action("Index","Home")">
+                <i class="home icon"></i>
+                Home
+            </a>
+            <a class="item NameClick" href="#">
+                <i class="user secret icon"></i>
+                個人資料
+            </a>
+            <a class="item hr" href="@Url.Action("HRShow","Home")">
+                <i class="user icon"></i>
+                人資專區
+            </a>
+            <a class="item " href="@Url.Action("AskforList","DDDDD")">
+                <i class="clock outline icon"></i>
+                出缺勤管理
+            </a>
+            <a class="item " href="@Url.Action("BulletinBoard","BulletinBoard")">
+                <i class="calendar alternate outline icon"></i>
+                行事曆與佈告欄
+            </a>
+            <a class="item " href="@Url.Action("pjView","projectControl")">
+                <i class="calendar icon"></i>
+                專案管理
+            </a>
+            <a class="item" href="@Url.Action("MeetingRoomBookingSearch","MeetingRoom")">
+                <i class="bookmark outline icon"></i>
+                資源預約
+            </a>
+        </div>
+        <div class="pusher">
+            <div class="ui basic segment">
+                <h3 class="ui header"></h3>
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <div class="ui small modal" id="UserProfile">
+        <i class="close icon"></i>
+        <div class="header">
+            員工資訊
+        </div>
+        <div class="content">
+            <form class="ui form addprofile "></form>
+        </div>
+        <div class="actions d-flex justify-content-between">
+            <div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Editpw">修改密碼</button>
+            </div>
+            <div>
+                <button type="button" class="btn btn-secondary cancel">Close</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="Editpw" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title " id="exampleModalLabel">員工資訊</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                    </button>
+                </div>
+                <div class="modal-body modalbody">
+                    <div class="d-flex my-4">
+                        <div>
+                            <label class="">輸入欲修改密碼：</label>
+                        </div>
+                        <div>
+                            <input type="password" class=" editpw1 ml-5" />
+                        </div>
+                    </div>
+                    <div class="d-flex mb-4">
+                        <div>
+                            <label class=" mr-2">重複輸入欲修改密碼：</label>
+                        </div>
+                        <div>
+                            <input type="password" class=" editpw2 ml-2" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div>
+                            <button type="button" class="btn btn-primary editpwsave">確認修改</button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-secondary ClearModal editpwcancel" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery.signalR-2.4.1.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.5/pagination.min.js" integrity="sha512-1zzZ0ynR2KXnFskJ1C2s+7TIEewmkB2y+5o/+ahF7mwNj9n3PnzARpqalvtjSbUETwx6yuxP5AJXZCpnjEJkQw==" crossorigin="anonymous"></script>
+    @RenderSection("script", required: false)
+    <script>
+        $('.ui.dropdown')
+            .dropdown();
+        $('.ui.sidebar')
+            .sidebar({
+                context: $('.bottom.segment')
+            })
+            .sidebar('attach events', '.slidermenu');
+
+        if (document.cookie != '') {
+            $('.CookieAuth').html(decodeURI(document.cookie.split('Auth=')[1].split('&')[0]));            
+            $('.CookieName').html(decodeURI(document.cookie.split('Name=')[1].split('&')[0]));
+            $('.CookieID').html(decodeURI(document.cookie.split('id=')[1].split('&')[0]));
+        } else {
+            window.location.href = "/Home/Login";
+        }
+
+        $(".Logout").click(function () {
+            swal({
+                title: '登出',
+                text: '確定要現在登出嗎？',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((isConfirm) => {
+                if (isConfirm) {
+                    swal("登出！", "登出成功!...", 'success');
+                    setTimeout(function () {
+                        $.ajax({
+                            url: "/Home/LogOut",
+                            method: "get",
+                            success: function (data) {
+                                window.location.href = "/Home/Login";
+                            }
+                        })
+                    }, 1000);
+                }
+            })
+        });
+
+
+        $(".NameClick").click(function () {
+            $("#UserProfile").modal('show');
+            $.ajax({
+                url: "/Home/MyProfile",
+                method: "Get",
+                success: function (data) {
+                    $(".addprofile").html(`
+                                                                                                              <div>
+                                                    <input type="hidden" name="EmployeePW" value="${data.EmployeePW}" />
+                                                    <input type="hidden" name="信箱" value="${data.信箱}" />
+                                                </div>
+
+                                                    <div class="field">
+                                                    <label class="formlbl">員工編號：</label>
+                                                    <input name="EmployeeID" type="text" class="w-100" value="${data.EmployeeID}" disabled />
+                                                    </div>
+
+                                                <div class="field">
+                                                    <div class="two fields">
+                                                        <div class="eight wide field">
+                                                            <label class="formlbl">中文姓名：</label>
+                                                            <input name="中文姓名" type="text" class="w-100" value="${data.中文姓名}" disabled />
+                                                        </div>
+                                                        <div class="eight wide field">
+                                                            <label class="formlbl">英文姓名：</label>
+                                                            <input name="英文姓名" type="text" class="w-100" value="${data.英文姓名}" disabled />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="two fields">
+                                                        <div class="five wide field">
+                                                            <label class="formlbl">性別：</label>
+                                                            <input type="text" name="性別" value="${data.性別}" hidden />
+                                                            <select disabled class="ml-2 mt-2">
+                                                                <option value="性別" selected>${data.性別}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="thirteen wide field">
+                                                            <label class="formlbl">出生年月日：</label>
+                                                            <input type="text" name="出生年月日" class="w-100" value="${data.出生年月日}" hidden />
+                                                            <input type="text" class="w-100" value="${data.出生年月日}" disabled />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <label class="formlbl">居住地:</label>
+                                                    <input name="居住地" value="${data.居住地}" disabled />
+                                                </div>
+
+                                                <div class="field">
+                                                    <div class="two fields">
+                                                        <div class="twelve wide field">
+                                                            <label class="formlbl">電話：</label>
+                                                            <input type="text" name="電話" class="w-100" value="${data.電話}" disabled />
+                                                        </div>
+                                                        <div class="six wide field">
+                                                            <label class="formlbl">婚姻狀況：</label>
+                                                            <select name="婚姻狀況" disabled>
+                                                                <option hidden>${data.婚姻狀況}</option>
+                                                                <option value="已婚">已婚</option>
+                                                                <option value="未婚">未婚</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="two fields">
+                                                        <div class="nine wide field">
+                                                            <label class="formlbl">部門：</label>
+                                                            <select name="部門" disabled>
+                                                                <option hidden>${data.部門}</option>
+                                                                <option value="財部部">財部部</option>
+                                                                <option value="總務部">總務部</option>
+                                                                <option value="人事部">人事部</option>
+                                                                <option value="業務部">業務部</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="nine wide field">
+                                                            <label class="formlbl">職稱：</label>
+                                                            <select name="職稱" disabled>
+                                                                <option hidden>${data.職稱}</option>
+                                                                <option value="主管">主管</option>
+                                                                <option value="員工">員工</option>
+                                                                <option value="人事">人事</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="two fields">
+                                                        <div class="nine wide field">
+                                                            <label class="formlbl">受雇日期：</label>
+                                                            <input type="text" name="受雇日期" class="w-100" value="${data.受雇日期}" hidden />
+                                                            <input type="text" class="w-100" value="${data.受雇日期}" disabled />
+                                                        </div>
+                                                        <div class="nine wide field">
+                                                            <label class="formlbl">在職狀態：</label>
+                                                            <select name="狀態" disabled>
+                                                                <option hidden>${data.狀態}</option>
+                                                                <option value="在職">在職</option>
+                                                                <option value="離職">離職</option>
+                                                                <option value="未到職">未到職</option>
+                                                                <option value="留職停薪">留職停薪</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="two fields">
+                                                        <div class="field">
+                                                            <label class="formlbl">薪資：</label>
+                                                            <input name="薪資" class="Regular shadow" value="${data.薪資}" disabled />
+                                                        </div>
+                                                        <div class="field">
+                                                            <label class="formlbl">特休：</label>
+                                                            <input name="特休" class="Regular shadow" value="${data.特休}" disabled />
+                                                        </div>
+                                                    </div>
+                                                </div>`);
+                }
+            });
+
+
+        });
+
+
+        if (decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) != '主管') {
+            $(".boss").attr('hidden', true);
+        }
+        if (decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) != '人事') {
+            $(".hr").attr('hidden', true);
+        }
+
+        $(".editpwcancel").click(function () {
+            $(".editpw1").val('');
+            $(".editpw2").val('');
+        });
+
+
+        $(".editpwsave").click(function () {
+            var newpwd = $(".editpw2").val();
+            var reg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!#$%^&*()_+`\-={}\[\]:";'<>?,.\/]).{4,16}$/;
+            var flag = reg.test(newpwd);
+            if ($(".editpw1").val() != $(".editpw2").val()) {
+                $(".editpw1").val('');
+                $(".editpw2").val('');
+                swal("驗證失敗", "密碼驗證輸入不相符...", "error");
+            }
+            else if ($(".editpw1").val() == '' || $(".editpw2").val() == '') {
+                $(".editpw1").val('');
+                $(".editpw2").val('');
+                swal("驗證失敗", "欄位不可為空", "error");
+            } else if (flag == false) {
+                $(".editpw1").val('');
+                $(".editpw2").val('');
+                swal("驗證失敗", "新密碼必須由 4-16位字母、數字、特殊符號線組成...", "error");
+                return false;
+            } else {
+                $.ajax({
+                    url: "/Home/EditPW",
+                    data: { 'pw': $(".editpw2").val() },
+                    method: "Get",
+                    success: function () {
+                        swal("成功", "修改密碼成功...", "success");
+                        $(".editpw1").val('');
+                        $(".editpw2").val('');
+                        $("#UserProfile").modal('hide');
+                        $("#Editpw").modal('hide');
+                    }
+                })
+            }
+        });
+
+        const bell = $.connection.bell;   //呼叫hub
+        $.connection.hub.start()
+            .done(function () {
+                bell.server.setgroup(document.cookie.split('id=')[1].split('&')[0]);
+            });
+
+        //bell.client.message = function (職稱, message) {
+        //    $(".AlertBell").append(` <div class="ui label item"><i class="bullhorn icon"></i><a class="text-success font-weight-bold" href="/BulletinBoard/BulletinBoard">${職稱}:${message}</a></div>`);
+        //    }
+
+        //bell.client.edit = function (message) {
+        //    $(".AlertBell").append(`<div class="ui label item"><i class="bullhorn icon"></i><a class="text-warning font-weight-bold"  b-eid="${beid++}"href="/BulletinBoard/BulletinBoard">${message}</a></div>`);
+        //}
+        bell.client.sendlv1 = function (通知類別, message, 權限) {
+            $(".AlertBell").html('');
+            AlertRefreshEmp(權限);
+        }
+        bell.client.sendlv2 = function (通知類別, message, 權限) {
+            $(".AlertBell").html('');
+            AlertRefreshEmp(權限);
+        }
+        bell.client.sendlv3 = function (通知類別, message, 權限) {
+            $(".AlertBell").html('');
+            AlertRefreshEmp(權限);
+        }
+        bell.client.sendtop = function (通知類別, message, 權限) {
+            $(".AlertBell").html('');
+            AlertRefreshEmp(權限);
+        }
+        AlertRefreshEmp(decodeURI(document.cookie.split('Auth=')[1].split('&')[0]));
+
+        function ChangePage() {
+            $('#overtimemodel').modal('show');
+            window.location.href = '/DDDDD/OverTime';
+        }
+        function AlertRefreshEmp(power) {
+            $.ajax({
+                url: "/Home/allalertbell",
+                data: { '權限': `${power}` },
+                method: "Get",
+                success: function (data) {
+                    let 第一則通知;
+                    $(data).each(function (index, item) {
+                        $(".AlertBell").append(`<div class="ui label item"><i class="bullhorn icon"></i><a class="alertword text-success font-weight-bold" >${item.通知類別id}:${item.通知內容}</a></div>`);
+                        if (index == 0) {
+                            //console.log(item.通知內容);
+                            //$(".topbell").dropdown("set text", `${item.通知類別id}:${item.通知內容}`);
+                            第一則通知 = `<i class="bullhorn icon"></i><a class="alertword text-success font-weight-bold" >${item.通知類別id}:${item.通知內容}</a>`;
+                        }
+                    });
+                    if ($(".AlertBell > div").length != 0) {
+                        $(".alertnumber").html(`<span class="alertword">${第一則通知}</span>`);
+                    };
+                }
+            })
+        }
+
+
+
+            //$(".AlertBell").click(function () {
+            //    console.log(123);
+            //    $(".AlertBell > li").click(function () {
+            //        $.ajax({
+            //            url: "/Home/alertcheck",
+            //            method: "Get",
+            //            data: { '第幾筆訊息': `$(event.currentTarget).data("item")` },
+            //            success: function (data) {
+            //                console.log(123);
+            //                $(".alertnumber").html('通知訊息');
+            //            }
+            //        });
+            //    });
+
+        /*   });*/
+    </script>
+</body>
+</html>

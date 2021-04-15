@@ -1,0 +1,1309 @@
+﻿@{
+    ViewBag.Title = "BulletinBoardList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .searchbox:focus{
+        outline:none;
+    }
+
+    .佈告欄總表外框 {
+        background-color: white;
+        height: 75%;
+        width: 75%;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+        padding-top: 0;
+        box-shadow: 3px 3px 9px black;
+        margin: auto;
+    }
+
+    .佈告欄列表 {
+        width: 75%;
+        box-shadow: 3px 3px 9px black;
+    }
+
+        .佈告欄列表 th {
+            padding: 10px 10px;
+            text-align: center;
+            background-color: #444444;
+        }
+
+        .佈告欄列表 td {
+            padding: 10px 10px;
+            text-align: center;
+        }
+
+    .文字 {
+        font-size: 25px;
+        font-weight: 900;
+        text-align: center;
+    }
+
+    .文字2 {
+        font-size: 25px;
+        font-weight: 900;
+    }
+
+    .新增按鈕 {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        margin-left: -30px;
+        width: 120px;
+        font-size: 20px;
+        font-weight: 900;
+        display: inline-block;
+        box-shadow: 3px 3px 9px black;
+    }
+
+    .詳細按鈕 {
+        font-size: 20px;
+        font-weight: 900;
+    }
+
+    .addTitle {
+        max-width: 460PX;
+        width: 460px;
+        height: 30px;
+    }
+
+    .addContent {
+        max-width: 460PX;
+        width: 460px;
+        height: 150px;
+        resize: none;
+    }
+
+    .txt樣式 {
+        max-width: 460PX;
+        width: 460px;
+        height: 30px;
+    }
+
+    .外框 {
+        overflow-x: scroll;
+        margin-top:30px;
+    }
+
+    .updateContent {
+        resize: none;
+        width: 460px;
+        height: 200px;
+        max-width: 460px;
+    }
+
+    .搜尋 {
+        width: 400px;
+        margin-top: 30px;
+    }
+
+    .搜尋框 {
+        width: 400px;
+        font-size: 18px;
+        font-weight: 900;
+        margin-left: 100px;
+        margin-bottom: 5px;
+        height: 40px;
+    }
+
+    .搜尋按鈕 {
+        height: 40px;
+        width:100px;
+        font-size: 18px;
+        font-weight: 900;
+        display: inline-block;
+        margin-left: 10px;
+        margin-bottom: 5px;
+        box-shadow: 3px 3px 9px black;
+    }
+
+    .打卡日曆 {
+        width: 800px;
+        height: 900px;
+    }
+
+    .搜尋彈跳視窗Table {
+        text-align: center;
+    }
+
+    .跳轉頁面框 {
+        margin-left: 180px;
+    }
+
+    .行事曆彈出視窗按鈕 {
+        font-size: 25px;
+        font-weight: 900;
+    }
+
+    .行事曆事項名稱輸入框 {
+        max-width: 1000px;
+        width: 880px;
+        font-weight: 900;
+        font-size: 25px;
+        height: 40px;
+    }
+
+    .行事曆時間輸入框 {
+        max-width: 1000px;
+        width: 880px;
+        font-weight: 900;
+        font-size: 25px;
+    }
+
+    .行事曆描述輸入框 {
+        max-width: 900px;
+        width: 880px;
+        max-height: 300px;
+        height: 250px;
+        resize: none;
+        font-weight: 900;
+        font-size: 25px;
+    }
+
+    .signincalender {
+        padding-top: 50px;
+    }
+
+    .打卡按鈕 {
+        height: 80px;
+        width: 200px;
+        font-size: 30px;
+        font-weight: 900;
+        display: inline-block;
+        box-shadow: 3px 3px 9px black;
+        margin-left: 60px;
+        margin-top: 40px;
+    }
+
+    .模擬打卡按鈕 {
+        height: 80px;
+        width: 200px;
+        font-size: 26px;
+        font-weight: 900;
+        display: inline-block;
+        box-shadow: 3px 3px 9px black;
+        margin-left: 60px;
+        margin-top: 40px;
+    }
+
+    .時鐘 {
+        margin-left:40px;
+        font-size: 25px;
+        font-weight: 900;
+    }
+
+    .按鈕大小 {
+        font-weight: 900;
+        font-size: 25px;
+    }
+
+    .打卡按鈕樣式 {
+        margin-left: 50px;
+    }
+
+    .佈告欄分頁{
+        height:100%;
+    }
+</style>
+
+
+@*------------------------------資料夾Model起始------------------------------*@
+<nav class="mt-5 文字 ">
+    <div class="nav nav-tabs font-weight-bolder w-75 mx-auto" id="nav-tab">
+        <a class="nav-item nav-link active text-dark" id="nav-home-tab" data-toggle="tab" href="#nav-1">佈告欄</a>
+        <a class="nav-item nav-link text-dark" id="nav-profile-tab" data-toggle="tab" href="#nav-2">行事曆</a>
+        <a class="nav-item nav-link text-dark" id="nav-profile1-tab" data-toggle="tab" href="#nav-3">打卡系統</a>
+        @*------------------------------搜尋框起始------------------------------*@
+    <div class="d-flex justify-content-center align-items-center">
+        <div>
+            <input type="search" name="searchbox" class="searchbox rounded-pill border-info pl-3 搜尋框" placeholder="搜尋發佈人姓名" />
+        </div>
+        <div class="ml-3">
+            <button class="btn btn-primary rounded-pill searchbtn 搜尋按鈕"><i class="fa fa-search mr-2"></i>搜尋</button>
+        </div>
+        <div>
+            <p id='clock' class="時鐘"></p>
+        </div>
+    </div>
+        @*------------------------------搜尋框結束------------------------------*@
+    </div>
+</nav>
+@*------------------------------資料夾Model結束------------------------------*@
+@*佈告欄總表*@
+<div class="佈告欄總表外框">
+    <div class="tab-content" id="nav-tabContent">
+        <div id="nav-1" class="tab-pane fade show active">
+            <div class="col-12 d-flex justify-content-between">
+                <div class="col-6">
+                    <a class="btn btn-primary empedit 新增按鈕" data-id="" data-toggle="modal" data-target="#CreateBulletinBoardList">新增</a>
+                </div>
+            </div>
+            @*------------------------------佈告欄起始------------------------------*@
+        <div class="外框">
+            <table class="table-hover w-100 table table-striped text-nowrap 佈告欄列表">
+                <thead class="THeadAdd 文字">
+                </thead>
+                <tbody class="TBodyAdd 文字">
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center pb-5 pt-5">
+                <div id="BulletinBoardPage"></div>
+            </div>
+        </div>
+            @*------------------------------佈告欄結束------------------------------*@
+        </div>
+        <div id="nav-2" class="tab-pane fade active ">
+            @*------------------------------Fullcalender起始------------------------------*@
+            <div id='calender' class="pt-5"></div>
+            @*------------------------------Fullcalender結束------------------------------*@
+        </div>
+        <div id="nav-3" class="tab-pane fade active ">
+            <div class="col-12 d-flex justify-content-between">
+                <div class="col-9 mt-5">
+                    <h2 style="font-weight:900; color:blue;">打卡規則如下 :</h2>
+                    <p style="font-weight: 900; font-size: 20px; display:inline-block;">1. 這裡設置上班打卡在早上9點以前並下班打卡在6點以後時為合格的上下班時間。</p>
+                    <p style="font-weight: 900; font-size: 20px; display:inline-block;">2. 第一次打卡為上班打卡，成功時會出現<a style="height:15px; width:150px; background-color:gray; color:gray; border-radius:5px; display:inline-block;margin-left:20px;"></a>  ，並在其上方顯示上班打卡時間與打卡人姓名。</p>
+                    <p style="font-weight:900;font-size:20px; display:inline-block;">3. 第二次打卡為下班打卡，當上下班打卡時間有符合第一條規則時，會顯示  <a style="height: 15px; width: 150px; background-color: green; color: green; border-radius: 5px; display: inline-block; margin-left: 20px;"></a>  ，表示今天上下班的時間正常。</p>
+                    <p style="font-weight:900;font-size:20px; display:inline-block;">4. 若是上下班打卡時間任意一次不符合第一條規則時，則會顯示  <a style="height: 15px; width: 150px; background-color: red; color: red; border-radius: 5px; display: inline-block; margin-left: 20px;"></a>  ，表示今天上下班的時間不正常。</p>
+                </div>
+                <div class="col-3 打卡按鈕樣式">
+                    <button type="button" class="btn btn-primary 模擬打卡按鈕" onclick="SignInDemoSave()">模擬成功打卡</button>
+                    <button type="button" class="btn btn-danger 打卡按鈕" onclick="SignInSave()">現在打卡</button>
+                </div>
+            </div>
+            <div id='signincalender' class="signincalender"></div>
+        </div>
+    </div>
+</div>
+
+
+@*------------------------------搜尋彈跳視窗起始------------------------------*@
+<div class="ui fullscreen modal centermodal" id="searchinfo" tabindex="-1" role="dialog">
+    <i class="close icon"></i>
+    <div class="header" style="background-color: InfoBackground">
+        <h1>佈告欄搜尋結果 ( 顯示最新的前10筆資料 )</h1>
+    </div>
+    <div class="content">
+        <table class="w-100 搜尋彈跳視窗">
+            <thead class="SerchShowTableHead w-100 h-100">
+            </thead>
+            <tbody class="SearchShowTable w-100 h-100">
+            </tbody>
+        </table>
+    </div>
+    <div class="actions">
+        <button type="button" class="ui inverted secondary big button cancel">關閉</button>
+    </div>
+</div>
+@*------------------------------搜尋彈跳視窗結束------------------------------*@
+
+@*佈告欄新增彈跳視窗*@
+<div id="CreateBulletinBoardList" class="ui modal centermodal">
+    <i class="close icon 關閉"></i>
+    <div class="header" style="background-color: deepskyblue">
+        <i class="close icon" onclick='$(".關閉").click()'></i>
+        <h1>新增佈告欄</h1>
+    </div>
+    <div class="content">
+        <form class="CreateBulletinBoard">
+            <label class="文字2">標題：</label>
+            <br>
+            <input name="Title" type="text" class="addTitle 行事曆事項名稱輸入框" />
+            <br>
+            <br>
+            <label class="文字2">內容：</label>
+            <br>
+            <textarea name="Content" class="addContent 行事曆描述輸入框 " rows="5" cols="200"></textarea>
+            <br>
+            <br>
+            <label class="文字2">發佈日期：</label>
+            <br>
+            <input name="Date" type="datetime-local" class="addDate 行事曆事項名稱輸入框" />
+            <br>
+            <br>
+            <label class="文字2">訊息重要度:</label>
+            <br>
+            <select class="訊息重要度 行事曆事項名稱輸入框" required>
+                <option value="1">高</option>
+                <option value="2">低</option>
+            </select>
+        </form>
+    </div>
+    <div class="actions">
+        <button type="button" class="ui inverted teal big button text-dark mr-3" onclick="BulletinBoardDemoAddOne()">訊高</button>
+        <button type="button" class="ui inverted teal big button text-dark mr-3" onclick="BulletinBoardDemoAddTwo()">訊低</button>
+        <button type="button" class="ui inverted blue big button text-dark mr-3" onclick="BulletinBoardAdd()">送出</button>
+        <button type="button" class="ui inverted secondary big button ClearModal cancel">取消</button>
+    </div>
+</div>
+
+@*佈告欄詳細彈跳視窗*@
+<div id="ShowBulletinBoard" class="ui modal centermodal" tabindex="-1" role="dialog">
+    <i class="close icon 關閉"></i>
+    <div class="header" style="background-color: #00CACA">
+        <i class="close icon" onclick='$(".關閉").click()'></i>
+        <h1>佈告欄資訊</h1>
+    </div>
+    <div class="content">
+        <form class="ShowUserProfile"></form>
+    </div>
+    <div class="actions">
+        <button type="button" class="ui inverted secondary big button ClearModal cancel">關閉</button>
+    </div>
+</div>
+
+@*佈告欄修改尋彈跳視窗*@
+<div id="EditBulletinBoard" class="ui modal centermodal" tabindex="-1" role="dialog">
+    <i class="close icon 關閉"></i>
+    <div class="header" style="background-color: gold">
+        <i class="close icon" onclick='$(".關閉").click()'></i>
+        <h1>編輯佈告欄</h1>
+    </div>
+    <div class="content">
+        <form class="EditUserProfile"></form>
+    </div>
+    <div class="actions">
+        <button type="button" class="ui inverted yellow big button text-dark editsave mr-3">修改</button>
+        <button type="button" class="ui inverted secondary big button ClearModal cancel">取消</button>
+    </div>
+</div>
+
+@*FullCalender修改彈跳視窗起始*@
+<div id="myModal" class="ui modal centermodal" tabindex="-1" role="dialog">
+    <i class="close icon 關閉"></i>
+    <div class="header" style=" background-color: #00CACA">
+        <i class="close icon" onclick='$(".關閉").click()'></i>
+        <h1><span id="eventTitle"></span></h1>
+    </div>
+    <div class="content">
+        <p id="pDetails" class="按鈕大小"></p>
+    </div>
+    <div class="actions">
+        <button id="btnDelete" class="ui inverted red big button text-dark">
+            <span class="glyphicon glyphicon-remove">刪除</span>
+        </button>
+        <button id="btnEdit" class="ui inverted yellow big button text-dark" style="margin-right:5px;">
+            <span class="glyphicon glyphicon-pencil">修改</span>
+        </button>
+        <button class="ui inverted secondary big button cancel">關閉</button>
+    </div>
+</div>
+@*FullCalender修改彈跳視窗結束*@
+
+@*FullCalender新增彈跳視窗起始*@
+<div id="myModalSave" class="ui modal centermodal" tabindex="-1" role="dialog">
+    <i class="close icon 關閉"></i>
+    <div class="header" style="background-color: deepskyblue">
+        <i class="close icon" onclick='$(".關閉").click()'></i>
+        <h1>新增事項</h1>
+    </div>
+    <div class="content">
+        <form class="col-md-12 form-horizontal">
+            <input type="hidden" id="hdEventID" value="0" />
+            <div class="form-group">
+                <label class="行事曆事項名稱輸入框">事項名稱</label>
+                <input type="text" id="txtSubject" class="form-control 行事曆事項名稱輸入框" />
+            </div>
+            <div class="form-group">
+                <label class="行事曆事項名稱輸入框">開始時間</label>
+                <div class="input-group date" id="dtp1">
+                    <input type="text" id="txtStart" class="form-control 行事曆時間輸入框" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group" id="divEndDate" style="display:none">
+                <label class="行事曆事項名稱輸入框">結束時間</label>
+                <div class="input-group date" id="dtp2">
+                    <input type="text" id="txtEnd" class="form-control 行事曆時間輸入框" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label class="行事曆事項名稱輸入框"><input type="checkbox" id="chkIsFullDay" checked="checked" />   全日</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="行事曆事項名稱輸入框">事項描述</label>
+                <textarea id="txtDescription" rows="3" class="form-control 行事曆描述輸入框"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="行事曆事項名稱輸入框">主題顏色</label>
+                <select id="ddThemeColor" class="form-control" style="font-weight:900; font-size:20px;">
+                    <option value="" style="font-weight:900; font-size:20px;">不使用</option>
+                    <option value="red" style="font-weight:900; font-size:20px;">紅色</option>
+                    <option value="blue" style="font-weight:900; font-size:20px;">藍色</option>
+                    <option value="black" style="font-weight:900; font-size:20px;">黑色</option>
+                    <option value="green" style="font-weight:900; font-size:20px;">綠色</option>
+                </select>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <button type="button" class="ui inverted teal big button text-dark mr-3" onclick="FullcalenderDemoAdd()">Demo</button>
+        <button type="button" id="btnSave" class="ui inverted primary big button text-dark mr-3">儲存</button>
+        <button type="button" class="ui inverted secondary big button cancel">關閉</button>
+    </div>
+</div>
+@*FullCalender新增彈跳視窗結束*@
+
+
+<link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css" rel="stylesheet" />
+<link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.print.css" rel="stylesheet" media="print" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+@section script{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script>
+
+        if (decodeURI(document.cookie.split('Auth=')[1].split('&')[0])!='主管') { $(".新增按鈕").attr('hidden',true)}
+        // 刷新
+
+        $(".empedit").click(function () { $("#CreateBulletinBoardList").modal('toggle') });
+
+        function refresh() {
+            if (decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) != '主管') {
+                $('#BulletinBoardPage').pagination({
+                    dataSource: function (done) {
+                        $.ajax({
+                            url: "/BulletinBoard/BulletinBoardList",
+                            method: "get",
+                            success: function (data) {
+                                done(data);
+                            },
+                        })
+                    },
+                    callback: function (data) {
+                        $(".THeadAdd").html(`
+                                                                                                            <tr>
+                                                                                                            <th>佈告欄編號</th>
+                                                                                                            <th>發佈人</th>
+                                                                                                            <th>標題</th>
+                                                                                                            <th>發佈日期</th>
+                                                                                                            <th>詳細</th>
+                                                                                                            </tr>
+                                                                                                            `)
+                        var a = "";  // 使用一個空字串
+                        $(data).each(function (index, item) {
+                            var datetime = parseInt(item.發布日期.replace(/\D/igm, ""));
+                            var datetime1 = new Date(datetime);
+
+                            if (datetime1.getHours() < 10) {
+                                x = "0" + datetime1.getHours();
+                            }
+                            else {
+                                x = datetime1.getHours();
+                            }
+
+                            if (datetime1.getMinutes() < 10) {
+                                y = "0" + datetime1.getMinutes();
+                            }
+                            else {
+                                y = datetime1.getMinutes();
+                            }
+                            a += ` <tr>
+                                                                                                <td>${item.佈告欄ID}</td>
+                                                                                                <td>${item.中文姓名}</td>
+                                                                                                <td>${item.佈告欄標題}</td>
+                                                                                                <td>${datetime1.getFullYear() + "/" + (datetime1.getMonth() + 1) + "/" + datetime1.getDate() + " " + x + ":" + y}</td>
+                                                                                                <td><a class="ui inverted teal big button text-dark empedit 詳細按鈕" data-id="${item.佈告欄ID}" data-toggle="modal" data-target="#ShowBulletinBoard" onclick="SearchThis()">詳細</a></td>
+                                                                                            </tr>`;
+                        })
+                        $(".TBodyAdd").html(a); // 取代原本內容
+                    }
+                })
+            }
+            else {
+                $('#BulletinBoardPage').pagination({
+                    dataSource: function (done) {
+                        $.ajax({
+                            url: "/BulletinBoard/BulletinBoardList",
+                            method: "get",
+                            success: function (data) {
+                                done(data);
+                            },
+                        })
+                    },
+                    callback: function (data) {
+                        $(".THeadAdd").html(`
+                                                                                                            <tr>
+                                                                                                            <th>佈告欄編號</th>
+                                                                                                            <th>發佈人</th>
+                                                                                                            <th>標題</th>
+                                                                                                            <th>發佈日期</th>
+                                                                                                            <th>編輯</th>
+                                                                                                            <th>刪除</th> 
+                                                                                                            </tr>
+                                                                                                            `)
+                        var a = "";  // 使用一個空字串
+                        $(data).each(function (index, item) {
+                            var datetime = parseInt(item.發布日期.replace(/\D/igm, ""));
+                            var datetime1 = new Date(datetime);
+
+                            if (datetime1.getHours() < 10) {
+                                x = "0" + datetime1.getHours();
+                            }
+                            else {
+                                x = datetime1.getHours();
+                            }
+
+                            if (datetime1.getMinutes() < 10) {
+                                y = "0" + datetime1.getMinutes();
+                            }
+                            else {
+                                y = datetime1.getMinutes();
+                            }
+                            a += ` <tr>
+                                                                                                <td>${item.佈告欄ID}</td>
+                                                                                                <td>${item.中文姓名}</td>
+                                                                                                <td>${item.佈告欄標題}</td>
+                                                                                                <td>${datetime1.getFullYear() + "/" + (datetime1.getMonth() + 1) + "/" + datetime1.getDate() + " " + x + ":" + y}</td>
+                                                                                                <td><a class="ui inverted yellow big button text-dark empedit 詳細按鈕" data-id="${item.佈告欄ID}" data-toggle="modal" data-target="#EditBulletinBoard" onclick="startedit()">編輯</a></td>
+                                                                                                <td><a class="ui inverted red big button text-dark empedit 詳細按鈕" data-id="${item.佈告欄ID}" data-toggle="modal" onclick="DeleteBB()">刪除</a></td>
+                                                                                            </tr>`;
+                        })
+                        $(".TBodyAdd").html(a); // 取代原本內容
+                    }
+                })
+            }
+        }
+                                                                                                     
+        refresh();
+
+        //---------------------------時鐘起始--------------------------
+        var now, hours, minutes, seconds, timeValue;
+        function showtime() {
+            now = new Date();
+            hours = now.getHours();
+            minutes = now.getMinutes();
+            seconds = now.getSeconds();
+            timeValue = (hours >= 12) ? "現在時間 :   下午 " : "現在時間   上午 ";
+            timeValue += `${hours > 12 ? hours - 12 : hours}  點`;
+            timeValue += ((minutes < 10) ? " 0" : " ") + minutes + " 分";
+            timeValue += ((seconds < 10) ? " 0" : " ") + seconds + " 秒";
+            clock.innerHTML = timeValue;
+            setTimeout("showtime()", 1000);
+        }
+        showtime();
+
+
+        // 新增方法
+        function BulletinBoardAdd() {
+            var 權限陣列 = [];
+            if (decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) == "主管" || decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) == "人事" || decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) == "員工") {
+                權限陣列.push('總經理');
+                權限陣列.push('主管');
+                權限陣列.push('人事');
+                權限陣列.push('員工');
+            }
+            if ($(".addTitle").val() == '' || $(".addContent").val() == '' || $(".addDate").val() == '') {
+                swal("佈告欄新增失敗", "欄位不可為空", "error");
+            }
+            else {
+                $.ajax({
+                    url: "/BulletinBoard/CreateBulletinBoard",
+                    data: {
+                        "佈告欄標題": $(".addTitle").val(),
+                        "佈告欄內容": $(".addContent").val(),
+                        "發布日期": $(".addDate").val(),
+                        "訊息重要度": $(".訊息重要度").val()
+                    },
+                    method: "Get",
+                    success: function (data) {
+                        let title = `${$(".addTitle").val()}`;
+                        swal("新增成功!", "佈告欄已新增成功!", "success");
+                        $.connection.hub.start()
+                            .done(function () {
+                                bell.server.sendGroup(`${2}`, `${decodeURI(document.cookie.split('Auth=')[1].split('&')[0])}`, `有新的佈告欄！`, 權限陣列);   //傳值到hub
+                            });
+                        $(".addTitle").val('');
+                        $(".addContent").val('');
+                        $(".addDate").val('');
+                        $(".訊息重要度").val("");
+                        $(".ClearModal").click();
+                        refresh();
+                    }
+                });
+            }
+        };
+
+        // 佈告欄Demo( 訊息強度高 )
+        function BulletinBoardDemoAddOne() {
+            $(".addTitle").val("開會通知"),
+                $(".addContent").val("請李啟凡、馬秀倩、鄭孝慈、李柏翰、秦敬堯於2021/04/14早上10點到602會議室開會。"),
+                $(".addDate").val("2021-04-14T10:00:00"),
+                $(".訊息重要度").val("1")
+        }
+
+        // 佈告欄Demo( 訊息強度低 )
+        function BulletinBoardDemoAddTwo() {
+            $(".addTitle").val("聚餐通知"),
+                $(".addContent").val("於2021-04-16晚上7點在圓山飯店聚餐(老闆請客)，想參加的同僚請於櫃台作登記，謝謝!"),
+                $(".addDate").val("2021-04-14T09:12:00"),
+                $(".訊息重要度").val("2")
+        }
+
+        // 編輯按鈕彈出來的方法
+        function startedit() {
+            $("#EditBulletinBoard").modal('toggle');
+            $.ajax({
+                url: "/BulletinBoard/SearchOneBulletinBoard",
+                method: "Get",
+                data: { "id": $(event.currentTarget).data("id") },
+                success: function (data) {
+                    var datetime = parseInt(data.發布日期.replace(/\D/igm, ""));
+                    var datetime1 = new Date(datetime);
+
+                    // 月
+                    if ((datetime1.getMonth() + 1) < 10) {
+                        m = "0" + (datetime1.getMonth() + 1);
+                    }
+                    else {
+                        m = datetime1.getDate();
+                    }
+
+                    // 日
+                    if (datetime1.getDate() < 10) {
+                        d = "0" + datetime1.getDate();
+                    }
+                    else {
+                        d = datetime1.getDate();
+                    }
+
+                    // 時
+                    if (datetime1.getHours() < 10) {
+                        h = "0" + datetime1.getHours();
+                    }
+                    else {
+                        h = datetime1.getHours();
+                    }
+
+                    // 分
+                    if (datetime1.getMinutes() < 10) {
+                        min = "0" + datetime1.getMinutes();
+                    }
+                    else {
+                        min = datetime1.getMinutes();
+                    }
+                    $(".EditUserProfile").html(`
+                                                        <div class="d-flex justify-content-center">
+                                                            <div class="mr-1">
+                                                                <div class="文字2">佈告欄編號：</div>
+                                                                <input name="BulletinBoardID" type="text" class="updateBBID 不能修改 txt樣式 行事曆事項名稱輸入框" disabled value="${data.佈告欄ID}"/>
+                                                                    <br>
+                                                                    <br>
+                                                                <input name="EmployeeID" type="hidden" class="updateEPID txt樣式 行事曆事項名稱輸入框" value="${data.EmployeeID}"/>
+                                                                <div class="文字2">發佈人：</div>
+                                                                <input name="發佈人姓名" type="text" class="updateBBName txt樣式 行事曆事項名稱輸入框" value="${data.中文姓名}" disabled/>
+                                                                <br>
+                                                                <br>
+                                                                <div class="文字2">標題：</div>
+                                                                <input name="Title" type="text" class="updateTitle txt樣式 行事曆事項名稱輸入框" value="${data.佈告欄標題}"/>
+                                                                <br>
+                                                                <br>
+                                                                <div class="文字2">內容:   </div>
+                                                                <textarea name="Content" class="updateContent 行事曆描述輸入框">${data.佈告欄內容}</textarea>
+                                                                <br>
+                                                                <br>
+                                                                <div class="文字2">發佈日期:  </div>
+                                                                <input name="Date" type="datetime-local" class="updateTime txt樣式 行事曆事項名稱輸入框" value="${datetime1.getFullYear() + "-" + m + "-" + d + "T" + h + ":" + min + ":00"}"/>
+                                                                <br>
+                                                                <br>
+                                                                <div class="文字2">訊息重要度:  </div>
+                                                                <select class="w-100 訊息重要度 文字2" required>
+                                                                <option value="1">高</option>
+                                                                <option value="2">低</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>`);
+                }
+            });
+        };
+
+        // 指定單筆資料(詳細)
+
+        function SearchThis() {
+            $("#ShowBulletinBoard").modal('toggle');
+            $.ajax({
+                url: "/BulletinBoard/SearchOneBulletinBoard",
+                method: "Get",
+                data: { "id": $(event.currentTarget).data("id") },
+                success: function (data) {
+                    var datetime = parseInt(data.發布日期.replace(/\D/igm, ""));
+                    var datetime1 = new Date(datetime);
+
+                    // 月
+                    if ((datetime1.getMonth() + 1) < 10) {
+                        m = "0" + (datetime1.getMonth() + 1);
+                    }
+                    else {
+                        m = datetime1.getDate();
+                    }
+
+                    // 日
+                    if (datetime1.getDate() < 10) {
+                        d = "0" + datetime1.getDate();
+                    }
+                    else {
+                        d = datetime1.getDate();
+                    }
+
+                    // 時
+                    if (datetime1.getHours() < 10) {
+                        h = "0" + datetime1.getHours();
+                    }
+                    else {
+                        h = datetime1.getHours();
+                    }
+
+                    // 分
+                    if (datetime1.getMinutes() < 10) {
+                        min = "0" + datetime1.getMinutes();
+                    }
+                    else {
+                        min = datetime1.getMinutes();
+                    }
+                    $(".ShowUserProfile").html(`
+                                                                        <div class="d-flex justify-content-center">
+                                                                            <div class="mr-1">
+                                                                                <div class="文字2">佈告欄編號：</div>
+                                                                                <input name="BulletinBoardID" type="text" class="updateBBID 不能修改 txt樣式 行事曆事項名稱輸入框" disabled value="${data.佈告欄ID}"/>
+                                                                                    <br>
+                                                                                    <br>
+                                                                                <input name="EmployeeID" type="hidden" class="updateEPID txt樣式 行事曆事項名稱輸入框" disabled value="${data.EmployeeID}"/>
+                                                                                <div class="文字2">發佈人：</div>
+                                                                                <input name="發佈人姓名" type="text" class="updateBBName txt樣式 行事曆事項名稱輸入框" disabled value="${data.中文姓名}" disabled/>
+                                                                                <br>
+                                                                                <br>
+                                                                                <div class="文字2">標題：</div>
+                                                                                <input name="Title" type="text" class="updateTitle txt樣式 行事曆事項名稱輸入框" disabled value="${data.佈告欄標題}"/>
+                                                                                <br>
+                                                                                <br>
+                                                                                <div class="文字2">內容:   </div>
+                                                                                <textarea name="Content" class="updateContent 行事曆描述輸入框" disabled>${data.佈告欄內容}</textarea>
+                                                                                <br>
+                                                                                <br>
+                                                                                <div class="文字2">發佈日期:  </div>
+                                                                                <input name="Date" type="text" class="updateTime txt樣式 行事曆事項名稱輸入框" disabled value="${datetime1.getFullYear() + " / " + m + " / " + d + "   " + h + ":" + min + ":00"}"/>
+                                                                                <br>
+                                                                                <br>
+                                                                            </div>
+                                                                        </div>`);
+                }
+            });
+        };
+
+        //-------------------------修改方法--------------------------------
+        $(".editsave").click(function () {
+            var 權限陣列 = [];
+            if (decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) == "主管" || decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) == "人事" || decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) == "員工") {
+                權限陣列.push('總經理');
+                權限陣列.push('主管');
+                權限陣列.push('人事');
+                權限陣列.push('員工');
+            }
+            $.ajax({
+                url: "/BulletinBoard/BulletinBoardEdit",
+                method: "Post",
+                data: {
+                    "佈告欄ID": $(".updateBBID").val(),
+                    "EmployeeID": $(".updateEPID").val(),
+                    "中文姓名": $(".updateBBName").val(),
+                    "佈告欄標題": $(".updateTitle").val(),
+                    "佈告欄內容": $(".updateContent").val(),
+                    "發布日期": $(".updateTime").val(),
+                    "訊息重要度": $(".訊息重要度").val()
+                },
+                success: function (data) {
+                    let EditTitle = $(".updateTitle").val();
+                    swal("修改成功!", "佈告欄已修改成功!", "success");
+                    $.connection.hub.start()
+                        .done(function () {
+                            bell.server.sendGroup(`${2}`, `${decodeURI(document.cookie.split('Auth=')[1].split('&')[0])}`, `佈告欄有新的異動！`, 權限陣列);   //傳值到hub
+                        });
+                    $(".ClearModal").click();
+                    refresh();
+                }
+            });
+        })
+
+        // ----------------------------刪除方法-----------------------------
+        function DeleteBB() {
+            var 權限陣列 = [];
+            if (decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) == "主管" || decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) == "人事" || decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) == "員工") {
+                權限陣列.push('總經理');
+                權限陣列.push('主管');
+                權限陣列.push('人事');
+                權限陣列.push('員工');
+            }
+            var id = $(event.currentTarget).data("id");
+            swal({
+                title: '刪除佈告欄？',
+                text: '確定刪除該筆佈告欄嗎?',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((isConfirm) => {
+                if (isConfirm) {
+                    swal("刪除!", "佈告欄已刪除!...", 'success');
+
+                    $.ajax({
+                        url: "/BulletinBoard/BulletinBoardDelete",
+                        method: "get",
+                        data: {
+                            "id": id
+                        },
+                        success: function (data) {
+                            $.connection.hub.start()
+                                .done(function () {
+                                    bell.server.sendGroup(`${2}`, `${decodeURI(document.cookie.split('Auth=')[1].split('&')[0])}`, `佈告欄有新的異動！`, 權限陣列);   //傳值到hub
+                                });
+                            refresh();
+                        }
+                    })
+                }
+                else {
+                    swal('取消!', "佈告欄已保留!...", 'info');
+                }
+                refresh();
+            });
+        }
+
+        //----------------------佈告欄搜尋按鈕起始----------------------
+        $(".searchbtn").click(function () {
+            if ($(".searchbox").val() == "") {
+                swal("查無此資料", "請重新輸入", "error");
+            } else {
+                if (decodeURI(document.cookie.split('Auth=')[1].split('&')[0]) != '主管') {
+                    $.ajax({
+                        url: "/BulletinBoard/BulletinBoardSearch",
+                        data: {
+                            "name": $(".searchbox").val()
+                        },
+                        success: function (data) {
+                            var a = ""
+                            if (data <= 1) {
+                                $(".SearchShowTable").html("");
+                                swal("查無此資料", "請重新輸入", "error");
+                            }
+                            else {
+                                $("#searchinfo").modal('show');
+                                $(".SearchShowTable").html("");
+                                $(data).each(function (index, item) {
+                                    $(".SerchShowTableHead").html(`
+                                                            <tr>
+                                                                <th>佈告欄編號</th>
+                                                                <th>發佈人</th>
+                                                                <th>標題</th>
+                                                                <th>發佈日期</th>
+                                                                <th>詳細</th>
+                                                            </tr>
+                                                            `)
+                                    var datetime = parseInt(item.發布日期.replace(/\D/igm, ""));
+                                    var datetime1 = new Date(datetime);
+
+                                    if (datetime1.getHours() < 10) {
+                                        x = "0" + datetime1.getHours();
+                                    }
+                                    else {
+                                        x = datetime1.getHours();
+                                    };
+
+                                    if (datetime1.getMinutes() < 10) {
+                                        y = "0" + datetime1.getMinutes();
+                                    }
+                                    else {
+                                        y = datetime1.getMinutes();
+                                    };
+                                    a += `<tr>
+                                                    <td>${item.佈告欄ID}</td>
+                                                    <td>${item.中文姓名}</td>
+                                                    <td>${item.佈告欄標題}</td>
+                                                    <td>${datetime1.getFullYear() + "/" + (datetime1.getMonth() + 1) + "/" + datetime1.getDate() + " " + x + ":" + y}</td>
+                                                    <td><a class="ui inverted teal big button text-dark empedit 詳細按鈕" data-id="${item.佈告欄ID}" data-toggle="modal" data-target="#ShowBulletinBoard" onclick="SearchThis()">詳細</a></td>
+                                                    </tr>`;
+                                    $(".SearchShowTable").html(a)
+                                })
+                            }
+                        }
+                    })
+                }
+                else {
+                    $.ajax({
+                        url: "/BulletinBoard/BulletinBoardSearch",
+                        data: {
+                            "name": $(".searchbox").val()
+                        },
+                        success: function (data) {
+                            var a = ""
+                            if (data <= 1) {
+                                $(".SearchShowTable").html("");
+                                swal("查無此資料", "請重新輸入", "error");
+                            }
+                            else {
+                                $("#searchinfo").modal('show');
+                                $(".SearchShowTable").html("");
+                                $(data).each(function (index, item) {
+                                    $(".SerchShowTableHead").html(`
+                                                            <tr>
+                                                                <th>佈告欄編號</th>
+                                                                <th>發佈人</th>
+                                                                <th>標題</th>
+                                                                <th>發佈日期</th>
+                                                                <th>編輯</th>
+                                                                <th>刪除</th>
+                                                            </tr>
+                                                            `)
+                                    var datetime = parseInt(item.發布日期.replace(/\D/igm, ""));
+                                    var datetime1 = new Date(datetime);
+
+                                    if (datetime1.getHours() < 10) {
+                                        x = "0" + datetime1.getHours();
+                                    }
+                                    else {
+                                        x = datetime1.getHours();
+                                    };
+
+                                    if (datetime1.getMinutes() < 10) {
+                                        y = "0" + datetime1.getMinutes();
+                                    }
+                                    else {
+                                        y = datetime1.getMinutes();
+                                    };
+                                    a += `<tr>
+                                                    <td>${item.佈告欄ID}</td>
+                                                    <td>${item.中文姓名}</td>
+                                                    <td>${item.佈告欄標題}</td>
+                                                    <td>${datetime1.getFullYear() + "/" + (datetime1.getMonth() + 1) + "/" + datetime1.getDate() + " " + x + ":" + y}</td>
+                                                    <td><a class="ui inverted yellow big button text-dark empedit 詳細按鈕" data-id="${item.佈告欄ID}" data-toggle="modal" data-target="#EditBulletinBoard" onclick="startedit()">編輯</a></td>
+                                                    <td><a class="ui inverted red big button text-dark empedit 詳細按鈕" data-id="${item.佈告欄ID}" data-toggle="modal" onclick="DeleteBB()">刪除</a></td>
+                                                    </tr>`;
+                                    $(".SearchShowTable").html(a)
+                                })
+                            }
+                        }
+                    })
+                }
+                $(".searchbox").val('');
+            }
+        });
+        //----------------------佈告欄搜尋按鈕結束----------------------
+
+        ///-------Fullcalender---------
+        $(document).ready(function () {
+            var events = [];
+            var selectedEvent = null;
+            FetchEventAndRenderCalendar();
+            function FetchEventAndRenderCalendar() {
+                events = [];
+                $.ajax({
+                    type: "GET",
+                    url: "/BulletinBoard/GetEvents",
+                    success: function (data) {
+                        $.each(data, function (i, v) {
+                            events.push({
+                                eventID: v.EventID,
+                                title: v.Subject,
+                                description: v.Description,
+                                start: moment(v.Start),
+                                end: v.End != null ? moment(v.End) : null,
+                                color: v.ThemeColor,
+                                allDay: v.IsFullDay
+                            });
+                        }),
+                            GenerateCalender(events);
+                    },
+                    error: function (error) {
+                        alert('failed');
+                    }
+                })
+            }
+
+            function GenerateCalender(events) {
+                $('#calender').fullCalendar('destroy');
+                $('#calender').fullCalendar({
+                    defaultDate: new Date(),
+                    timeFormat: 'h(:mm)a',
+                    header: {
+                        left: 'prevYear,prev,next,nextYear today',
+                        center: 'title',
+                        right: 'month,basicWeek,agenda'
+                    },
+                    contentHeight: 850,   // 容器高
+                    monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                    dayNames: ["週日", "週一", "週二", "週三", "週四", "週五", "週六"],
+                    dayNamesShort: ["週日", "週一", "週二", "週三", "週四", "週五", "週六"],
+                    today: ["今天"],
+                    buttonText: {
+                        today: '今天',
+                        month: '月',
+                        week: '週',
+                        agenda: '日'
+                    },
+                    eventLimit: true,
+                    eventColor: '#378006',
+                    events: events,
+                    eventClick: function (calEvent, jsEvent, view) {
+                        selectedEvent = calEvent;
+                        $('#myModal #eventTitle').text(calEvent.title);
+                        var $description = $('<div/>');
+                        $description.append($('<p/>').html('<b>開始時間 :</b>' + "    " + calEvent.start.format("YYYY-MM-DD HH:mm A")));
+                        if (calEvent.end != null) {
+                            $description.append($('<p/>').html('<b>結束時間 :</b>' + "    " + calEvent.end.format("YYYY-MM-DD HH:mm A")));
+                        }
+                        $description.append($('<p/>').html('<b class="mr-3">內容 :</b>' + "<br/>" + "<br/>" + calEvent.description));
+                        $('#myModal #pDetails').empty().html($description);
+
+                        $('#myModal').modal('show');
+                    },
+                    selectable: true,
+                    select: function (start, end) {
+                        selectedEvent = {
+                            eventID: 0,
+                            title: '',
+                            description: '',
+                            start: start,
+                            end: end,
+                            allDay: false,
+                            color: ''
+                        };
+                        openAddEditForm();
+                        $('#calender').fullCalendar('unselect');
+                    },
+                    editable: true,
+                    eventDrop: function (event) {
+                        var data = {
+                            EventID: event.eventID,
+                            Subject: event.title,
+                            Start: event.start.format('YYYY/MM/DD HH:mm A'),
+                            End: event.end != null ? event.end.format('YYYY/MM/DD HH:mm A') : null,
+                            Description: event.description,
+                            ThemeColor: event.color,
+                            IsFullDay: event.allDay
+                        };
+                        SaveEvent(data);
+                    }
+                })
+            }
+
+            $('#btnEdit').click(function () {
+                //Open modal dialog for edit event
+                openAddEditForm();
+            })
+
+
+            $('#btnDelete').click(function () {
+                if (selectedEvent != null && confirm('確定刪除此行事曆項目嗎?')) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/BulletinBoard/DeleteEvent',
+                        data: { 'eventID': selectedEvent.eventID },
+                        success: function (data) {
+                            if (data.status) {
+                                swal("刪除!", "行事曆項目已刪除!...", 'success');
+                                //Refresh the calender
+                                FetchEventAndRenderCalendar();
+                                $('#myModal').modal('hide');
+                            }
+                        },
+                        error: function () {
+                            alert('已取消刪除此行事曆項目!');
+                        }
+                    })
+                }
+            })
+
+            $('#dtp1,#dtp2').datetimepicker({
+                format: 'YYYY/MM/DD HH:mm A'
+            });
+
+            $('#chkIsFullDay').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#divEndDate').hide();
+                }
+                else {
+                    $('#divEndDate').show();
+                }
+            });
+
+            function openAddEditForm() {
+                if (selectedEvent != null) {
+                    $('#hdEventID').val(selectedEvent.eventID);
+                    $('#txtSubject').val(selectedEvent.title);
+                    $('#txtStart').val(selectedEvent.start.format('YYYY/MM/DD HH:mm A'));
+                    $('#chkIsFullDay').prop("checked", selectedEvent.allDay || false);
+                    $('#chkIsFullDay').change();
+                    $('#txtEnd').val(selectedEvent.end != null ? selectedEvent.end.format('YYYY/MM/DD HH:mm A') : '');
+                    $('#txtDescription').val(selectedEvent.description);
+                    $('#ddThemeColor').val(selectedEvent.color);
+                }
+                $('#myModal').modal('hide');
+                $('#myModalSave').modal('show');
+            }
+
+            $('#btnSave').click(function () {
+                //Validation/
+                if ($('#txtSubject').val().trim() == "") {
+                    alert('Subject required');
+                    return;
+                }
+                if ($('#txtStart').val().trim() == "") {
+                    alert('Start date required');
+                    return;
+                }
+                if ($('#chkIsFullDay').is(':checked') == false && $('#txtEnd').val().trim() == "") {
+                    alert('End date required');
+                    return;
+                }
+                else {
+                    var startDate = moment($('#txtStart').val(), "YYYY/MM/DD HH:mm A").toDate();
+                    var endDate = moment($('#txtEnd').val(), "YYYY/MM/DD HH:mm A").toDate();
+                    if (startDate > endDate) {
+                        alert('Invalid end date');
+                        return;
+                    }
+                }
+
+                var data = {
+                    EventID: $('#hdEventID').val(),
+                    Subject: $('#txtSubject').val().trim(),
+                    Start: $('#txtStart').val().trim(),
+                    End: $('#chkIsFullDay').is(':checked') ? null : $('#txtEnd').val().trim(),
+                    Description: $('#txtDescription').val(),
+                    ThemeColor: $('#ddThemeColor').val(),
+                    IsFullDay: $('#chkIsFullDay').is(':checked')
+                }
+                SaveEvent(data);
+                // call function for submit data to the server
+            })
+
+            function SaveEvent(data) {
+                $.ajax({
+                    type: "POST",
+                    url: '/BulletinBoard/SaveEvent',
+                    data: data,
+                    success: function (data) {
+                        if (data.status) {
+                            //Refresh the calender
+                            FetchEventAndRenderCalendar();
+                            $('#myModalSave').modal('hide');
+                            swal("新增成功!", "行事曆已新增成功!", "success");
+                        }
+                    },
+                    error: function () {
+                        alert('Failed');
+                    }
+                })
+            }
+        })
+
+        //-----------FullcalenderDemo--------------
+        function FullcalenderDemoAdd() {
+            $('#txtSubject').val("開會");
+            $('#txtStart').val("2021/04/14 09:00 AM");
+            $('#chkIsFullDay').val("");
+            $('#txtEnd').val("2021/04/14 11:00 AM");
+            $('#txtDescription').val("於2021/04/14 09:00 AM在603會議室開會。");
+            $('#ddThemeColor').val("red");
+        };
+
+        // ------------------------打卡系統---------------------------
+        var events = [];
+        ShowCalendar();
+        function ShowCalendar() {
+            events = [];
+            $.ajax({
+                type: "GET",
+                url: "/BulletinBoard/SignInShow",
+                success: function (data) {
+                    $.each(data, function (i, v) {
+                        events.push({
+                            eventID: v.打卡ID,
+                            EmployeeID: v.員工編號,
+                            title: v.中文姓名,
+                            description: v.打卡日期,
+                            start: moment(v.上班打卡時間),
+                            end: moment(v.下班打卡時間),
+                            color: v.ThemeColor,
+                        });
+                    }),
+                        MadeCalender(events);
+                },
+                error: function (error) {
+                    alert('failed');
+                }
+            })
+        }
+
+        function MadeCalender(events) {
+            $('#signincalender').fullCalendar('destroy');
+            $('#signincalender').fullCalendar({
+                defaultDate: new Date(),
+                timeFormat: 'h(:mm)a',
+                header: {
+                    left: 'prevYear,prev,next,nextYear today',
+                    center: '',
+                    right: 'title'
+                },
+                contentHeight: 750,   // 容器高
+                monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                dayNames: ["週日", "週一", "週二", "週三", "週四", "週五", "週六"],
+                dayNamesShort: ["週日", "週一", "週二", "週三", "週四", "週五", "週六"],
+                today: ["今天"],
+                buttonText: {
+                    today: '今天',
+                    month: '月',
+                    week: '週',
+                    agenda: '日'
+                },
+                eventLimit: true,
+                eventColor: '#378006',
+                events: events,
+                selectable: true,
+                select: function (start, end) {
+                    selectedEvent = {
+                        eventID: $('.CookieAuth').html(decodeURI(document.cookie.split('Auth=')[1].split('&')[0])),
+                        title: '',
+                        description: '',
+                        start: start,
+                        end: end,
+                        color: ''
+                    };
+                    $('#signincalender').fullCalendar('unselect');
+                }
+            })
+        }
+
+        function SignInSave(data) {
+            $.ajax({
+                type: "POST",
+                url: '/BulletinBoard/SignInSave',
+                data: data,
+                success: function () {
+                    swal("打卡成功!", "你已成功打卡!", "success");
+                    ShowCalendar();
+                }
+            })
+        }
+
+        function SignInDemoSave(data) {
+            $.ajax({
+                type: "POST",
+                url: '/BulletinBoard/SignInDemoSave',
+                data: data,
+                success: function () {
+                    swal("打卡成功!", "你已成功打卡!", "success");
+                    ShowCalendar();
+                }
+            })
+        }
+    </script>
+}

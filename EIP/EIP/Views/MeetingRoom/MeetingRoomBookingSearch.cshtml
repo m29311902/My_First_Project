@@ -1,0 +1,748 @@
+﻿
+@{
+    ViewBag.Title = "BookingView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #dataEditl {
+        position: relative;
+    }
+
+    .modal {
+        height: auto;
+        top: auto;
+        left: auto;
+        bottom: auto;
+        right: auto;
+    }
+</style>
+
+
+
+<div class="subheader md-4">
+    <h2 class="subheader-title p-4">
+        <i class="bookmark icon"></i>
+        <span data-id="text">資源預約</span>
+    </h2>
+</div>
+
+@*modal +Add Calendar-modal*@
+
+<div class="ui modal centermodal" id="Calendar-modal">
+    <i class="ui-icon cancel"></i>
+    <h1 class="ui header modelHeader">預約搜尋</h1>
+    <div class="content">
+        @*<form class="ui form segment">*@
+        <input type="hidden" id="hdeventID" value="0" />
+        <div class="two fields" hidden >
+            <div class="field">
+                <label for="name">中文姓名</label>
+                <input type="text" id="emNname" name="name" placeholder="Name" readonly="" value="">
+            </div>
+            <div class="field">
+                <label for="employeeId">員工編號</label>
+                <input type="text" id="emId" name="employeeId" readonly="" value="">
+            </div>
+        </div>
+        <form class="ui form Booking-modal" name="bookingModal" id="Booking-modal">
+            <div class="two fields">
+                <div class="field">
+                    <label for="MeetingSubject">主旨</label>
+                    <input type="text" name="MeetingSubject" id="MeetingSubject" placeholder="主旨">
+                </div>
+                <div class="field">
+                    <label for="MeetingRoomName">資源</label>
+                    @*<input type="text" name="MeetingRoomName" id="MeetingRoomName" >*@
+                    <select class="ui search dropdown" name="MeetingRoomName" id="MeetingRoomName">
+                        <option value="">資源名稱</option>
+                        <option value="601會議室">601會議室-4人</option>
+                        <option value="602會議室">602會議室-6人</option>
+                        <option value="603會議室">603會議室-8人</option>
+                        <option value="604會議室">604會議室-10人</option>
+                        <option value="605會議室">605會議室-10人</option>
+                        <option value="606訓練教室">訓練教室-30人</option>
+                        <option value="公務車01">公務車-4人</option>
+                        <option value="公務車02">公務車-6人箱型</option>
+                    </select>
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui checkbox">
+                    <input type="checkbox" id="chboxisAllday">
+                    <label for="isAllday"><i class="tasks icon"></i>全日預約</label>
+                </div>
+            </div>
+            <div class="ui form">
+                <div class="two fields">
+                    <div class="field">
+                        <label>開始時間</label>
+                        <div class="ui calendar" id="example13">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" placeholder="StartDate" id="startTime" data-position="right center" data-variation="mini">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field" id="divEndDate">
+                        @*style="display:none"*@
+                        <label>結束時間</label>
+                        <div class="ui  calendar" id="example14">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" placeholder="EndDate" id="endTime" data-position="left center" data-variation="mini">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*<h4 class="ui dividing header">參與人員</h4>*@
+            <div class="field">
+                @*<label>E-Mail To</label>*@
+                <div class="ui fluid multiple search selection dropdown" id="dropdownmenu" hidden>
+                    <input type="hidden" name="MeetingAttentee" id="attendee" hidden>
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Saved Contacts</div>
+                    <div class="menu">
+                        <div class="item" data-value="jenny" data-text="Jenny">
+                            @*<img class="ui mini avatar image" src="~/images/iconfinder_letter_J_red_1553101.png" />*@
+                            Jenny Hess
+                        </div>
+                        <div class="item" data-value="elliot" data-text="Elliot">
+                            @*<img class="ui mini avatar image" src="~/images/iconfinder_letter_E_blue_1553095.png" />*@
+                            Elliot Fu
+                        </div>
+                        <div class="item" data-value="stevie" data-text="Stevie">
+                            @*<img class="ui mini avatar image" src="~/images/iconfinder_letter_S_blue_1553065.png" />*@
+                            Stevie Feliciano
+                        </div>
+                        <div class="item" data-value="christian" data-text="Christian">
+                            @*<img class="ui mini avatar image" src="~/images/iconfinder_letter_C_red_1553060.png" />*@
+                            Christian
+                        </div>
+                        <div class="item" data-value="matt" data-text="Matt">
+                            @*<img class="ui mini avatar image" src="~/images/iconfinder_letter_M_blue_1553077.png" />*@
+                            Matt
+                        </div>
+                        <div class="item" data-value="justen" data-text="Justen">
+                            @*<img class="ui mini avatar image" src="~/images/iconfinder_letter_J_blue_1553054.png" />*@
+                            Justen Kitsune
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label for="Description">描述</label>
+                <textarea rows="2" id="Description" placeholder="描述"></textarea>
+            </div>
+            <div class="field">
+                <div class="ui primary submit button" id="txtSend">
+                    <i class="save icon"></i>Send
+                </div>
+                <button class="ui negative button" id="txtCancel">Cancel</button>
+                <div class="ui grey button" id="txtDemo">Demo</div>
+                @*<input type="reset" class="ui clear button" id="resetForm" hidden />*@
+                <div class="ui clear button" id="clearForm" hidden>Clear</div>
+            </div>
+        </form>
+    </div>
+    <!--<div class="actions">
+        <button class="ui grey button" id="txtDemo">Demo</button>
+        <button class="ui primary button" id="txtSend">
+            <i class="save icon"></i>Send
+        </button>
+        <button class="ui negative button" id="txtCancel">Cancel</button>
+        <div class="ui clear button">Clear</div>
+        <div class="ui reset button">Reset</div>-->
+    @*<button class="ui reset pink  button" id="resetform" >Reset</button>*@
+    @*<input type="reset" class="resetform" id="resetform" />*@
+    <!--</div>-->
+</div>
+@*End +Add modal*@
+
+@*modal start Edit*@
+<div class="ui small modal centermodal" id="dataEdit">
+    <h1 class="ui header  modelHeader" id="editTitle">Modify Booking data</h1>
+    <div class="content">
+        <p id="editbody" class="editbody"></p>
+        @*<div class="editbody"> changeToajax
+                <h3 class="ui header">Resource Name: <span id="editRoom"></span></h3>
+                <h3 class="ui header">開始時間:<span id="editStart"></span></h3>
+                <h3 class="ui header">結束時間:<span id="editEnd"></span></h3>
+            </div>*@
+    </div>
+    <div class="actions">
+        <div class="ui  olive  button" id="btnEdit">
+            <i class="edit icon"></i>Edit
+        </div>
+        <div class="ui  negative  button" id="btnDelete"> Delete</div>
+    </div>
+</div>
+@*checkbox*@
+
+@*modal - delete alert*@
+
+<div class="ui small modal" id="deletemodal">
+    <div class="header"><h1>通知</h1></div>
+    <div class="content">
+        <p><h1>您確定要刪除此筆預約?</h1></p>
+    </div>
+    <div class="actions">
+        <div class="ui deny button">
+           取消
+        </div>
+        <div class="ui negative button" id="deletedmodal">
+            <i class="trash alternate icon"></i> 確定
+        </div>
+    </div>
+</div>
+@*modal - delete alert*@
+
+<div class="ui celled grid">
+    <div class="row">
+        <div class="three wide column">
+            <div class="ui placeholder segment">
+                <div class="field">
+                    <div class="ui icon header">
+                        @*<input type="text" placeholder="搜尋...">*@
+                        <i class="search icon"></i>
+                    </div>
+                </div>
+                <div class="ui form">
+                    <div class="grouped fields">
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="example2" checked="checked" id="searchAll" value="1">
+                                <label>Check All</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="example2" id="check601" value="601會議室">
+                                <label>601會議室-4人</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="example2" id="check602" value="602會議室">
+                                <label>602會議室-6人</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="example2" id="check603" value="603會議室">
+                                <label>603會議室-8人</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="example2" id="check604" value="604會議室">
+                                <label>604會議室-10人</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="example2" id="check605" value="605會議室">
+                                <label>605會議室-10人</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="example2" id="check606" value="606訓練教室">
+                                <label>訓練教室-30人</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="example2" id="car01" value="公務車01">
+                                <label>公務車-4人</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="example2" id="car02" value="公務車02">
+                                <label>公務車-6人箱型</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="thirteen wide column">
+            <div id='calendar'></div>
+        </div>
+    </div>
+</div>
+
+
+<link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css" rel="stylesheet" />
+<link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.print.css" rel="stylesheet" media="print" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css" integrity="sha512-PIAUVU8u1vAd0Sz1sS1bFE5F1YjGqm/scQJ+VIUJL9kNa8jtAWFUDMu5vynXPDprRRBqHrE8KKEsjA7z22J1FA==" crossorigin="anonymous" />*@
+<link href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css" rel="stylesheet" type="text/css" />
+
+@section script{
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
+
+
+
+    <script>
+
+        $(document).ready(() => {
+
+            var nowUserId = document.cookie.split('id=')[1].split('&')[0];
+            var nowUserName = decodeURI(document.cookie.split('Name=')[1].split('&')[0]);
+            //alert("nowUserId" + nowUserId)
+            //alert("nowUserName"+nowUserName)
+        
+
+            //var userId = $('#emId').attr('value', document.cookie.split('id=')[1].split('&')[0]);
+            //var userName = $('#emNname').attr('value', decodeURI(document.cookie.split('Name=')[1].split('&')[0]));
+
+            var userId = $('#emId').val(`${document.cookie.split('id=')[1].split('&')[0]}`);
+            var userName = $('#emNname').val(`${decodeURI(document.cookie.split('Name=')[1].split('&')[0])}`);
+            //$("#EmployeeID").val(`${document.cookie.split('id=')[1].split('&')[0]}`),
+            //    $("#中文姓名").val(`${decodeURI(document.cookie.split('Name=')[1].split('&')[0])}`),
+            //alert("userId" + userId)
+            //alert("userName" + userName)
+
+
+            var events = [];
+            var selectedEvent = null;
+            var double = null;
+
+            EventRefresh();
+
+            //checkbox status
+            $('[name=example2]').change(function () {
+                var checked = $('[name=example2]:checked');
+                var x = checked.val();
+                if (x == 1) {
+                    /* console.log('All', x)*/
+                    EventRefresh();
+                } else {
+                    checkboxstatus(x);
+                    /*  console.log('else',x)*/
+                }
+            })
+
+            //checkbox status
+
+            //checkbox status  function
+            function checkboxstatus(x) {
+                events = [];
+                /*  var moment = new Date();*/
+                $.ajax({
+                    url: "/MeetingRoom/checkBoxStatus",
+                    type: "GET",
+                    data: { "Room": x },
+                    success: function (data) {
+                        /*  console.log(data);*/
+                        $.each(data, function (i, v) {
+                            events.push({
+                                eventID: v.BookingId,
+                                title: v.MeetingRoomName,
+                                description: v.MeetingRemark,
+                                start: moment(v.BookingStartTime).toDate(),
+                                end: v.BookingEndTime != null ? moment(v.BookingEndTime).toDate() : null,
+                                allDay: v.IsAllDay,
+                                subject: v.MeetingSubject,
+                                bookingEmID: v.EmployeeID,
+                                bookingEmName: v.中文姓名,
+                                attendee: v.MeetingAttentee,
+                                status: v.Status,
+                            });
+                        })
+                        /* console.log(events)*/
+                        GenerateCal(events);
+                    }, error: function (error) {
+                        alert("Reading failed")
+                    },
+                })
+            }
+
+            function EventRefresh() {
+                events = [];
+                // getbook remark//
+                $.ajax({
+                    type: "GET",
+                    url: "/MeetingRoom/GetBooking",
+                    success: function (data) {
+                        //console.log(data.BookingId)
+                        /* alert(data.BookingId)*/
+                        $.each(data, function (i, v) {
+                            events.push({
+                                eventID: v.BookingId,
+                                title: v.MeetingRoomName,
+                                description: v.MeetingRemark,
+                                start: moment(v.BookingStartTime),
+                                end: v.BookingEndTime != null ? moment(v.BookingEndTime) : null,
+                                allDay: v.IsAllDay,
+                                subject: v.MeetingSubject,
+                                bookingEmID: v.EmployeeID,
+                                bookingEmName: v.中文姓名,
+                                attendee: v.MeetingAttentee,
+                                status: v.Status,
+                            });
+                        })
+                        GenerateCal(events);
+                    },
+                    error: function (error) {
+                        alert("Reading failed")
+                    },
+                })
+                // getbook remark//
+            }
+
+            function GenerateCal(events) {
+                $('#calendar').fullCalendar('destroy');
+                $('#calendar').fullCalendar({
+                    themeSystem: 'bootstrap4',
+                    defaultDate: new Date(),
+                    slotDuration: '00:30:00',
+                    snapDuration: '00:30:00',
+                    minTime: '08:30:00',
+                    maxTime: '20:00:00',
+                    nowIndicator: true,
+                    /*locale: 'zh-tw',*/
+                    timeFormat: 'HH:mm a',
+                    editable: true,
+                    eventDrop: function (event) {
+                       /* alert('event.start.toDate' + event.start.toDate)*/
+                        if (event.bookingEmID != nowUserId) {
+                            EventRefresh();
+                            swal("您無法修改非本人預約", "請重新操作", "error")                            
+                                    } else {                           
+                            $.ajax({
+                                type: "GET",
+                                url: "/MeetingRoom/CheckBooking",
+                                data: {
+                                    "MeetingRoomName": event.title,
+                                    "BookingStartTime": event.start.format('YYYY-MM-DD HH:mm a'),
+                                        /*event.start.format('YYYY-MM-DD HH:mm a'),*/
+                                    "BookingEndTime": event.end.format('YYYY-MM-DD HH:mm a'),
+                                },
+                                success: function (data) {
+                                    /* console.log('checkeventboockingdata', data);*/
+                                    if (data == false) {
+                                        var data = {
+                                            BookingId: event.eventID,
+                                            MeetingRoomName: event.title,
+                                            BookingStartTime: event.start.format('YYYY-MM-DD HH:mm a'),
+                                            BookingEndTime: event.end != null ? event.end.format('YYYY-MM-DD HH:mm a') : null,
+                                            MeetingRemark: event.description,
+                                            IsAllDay: event.allDay,
+                                            EmployeeID: event.bookingEmID,
+                                            中文姓名: event.bookingEmName,
+                                            MeetingAttentee: event.attendee,
+                                            MeetingSubject: event.subject,
+                                        };
+                                        /*  alert(event.bookingEmID + "use" + nowUserId)*/
+                                        SaveEvent(data);
+                                    } else {
+                                        EventRefresh();
+                                        swal("您所選的資源及時段目前己被預訂", "請重新操作", "error")      
+                                    }
+                                },
+                            })
+                        }        
+                    },
+                    selectable: true,
+                    selectHelper: true,
+                    select: function (start, end) {
+                        /*  alert(selectedEvent + 'selectedEvent')*/
+                        selectedEvent = {
+                            eventID: 0,
+                            title: '',
+                            description: '',
+                            start: start,
+                            end: end,
+                            allDay: false,
+                            subject: '',
+                            attendee: '',
+                            name: '',
+                        };
+                        oopenAddEditForm();
+                        $('#calender').fullCalendar('unselect');
+                    },
+                    eventLimit: true,
+                    views: {
+                        month: {
+                            eventLimit: 3 // adjust to 6 only for timeGridWeek/timeGridDay
+                        }
+                    },
+                    customButtons: {
+                        Add: {
+                            text: '+ Add',
+                            click: function () {
+                                clearAlltxt();
+                                $('#Calendar-modal').modal('toggle');
+                            }
+                        }
+                    }, //customBtnEnd
+
+                    header: {
+                        left: 'Add, prev,next, today,',
+                        right: 'month, agendaWeek, agendaDay, listWeek',
+                        center: 'title'
+                    },
+                    events: events,
+                    eventClick: function (calEvent, jsEvent, view) {
+
+                        selectedEvent = calEvent;
+                        $('#dataEdit #editTitle').text(calEvent.title);
+                        var $description = $('<div/>');
+                        $description.append($('<p/>').html('<b  class="ui header">預約者 : </b>' + "    " + calEvent.bookingEmName));
+                        $description.append($('<p/>').html('<b  class="ui header">開始時間 :</b>' + "    " + calEvent.start.format("YYYY-MM-DD HH:mm a")));
+
+                        if (calEvent.end != null) {
+                            $description.append($('<p/>').html('<b  class="ui header">結束時間 :</b>' + "    " + calEvent.end.format("YYYY-MM-DD HH:mm a")));
+                        } else { $description.append($('<p/>').html('<b  class="ui header">資源為全日預約</b>')); }
+                        /* $description.append($('<p/>').html('<b  class="ui header">Resource Name:</b>' + "<br/>" + "<br/>" + calEvent.description));*/
+                        $('#dataEdit #editbody').empty().html($description);
+
+                        $(this).css('border-color', 'red');
+                        $('#dataEdit').modal('toggle');
+                    },
+                });
+            }
+
+            //modal calendar setup
+            $('#example13').calendar({
+                monthFirst: false,
+                contantHeight: true,
+                popupPosition: 'top center',
+                formatter: {
+                    date: function (date, settings) {
+                        if (!date) return '';
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = date.getFullYear();
+                        return year + '-' + month + '-' + day;
+                    },
+                }
+            });
+
+            $('#example14').calendar({
+                monthFirst: false,
+                contantHeight: true,
+                popupPosition: 'top center',
+                formatter: {
+                    date: function (date, settings) {
+                        if (!date) return '';
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = date.getFullYear();
+                        return year + '-' + month + '-' + day;
+                    },
+                }
+            });
+            //end modal calendar setup
+
+            //clear modal Add+ data
+            function clearAlltxt() {
+                $('.ui.clear.button').click($('.ui.form.Booking-modal').form('clear'))
+            };
+
+
+
+            // edit Btn
+            $('#btnEdit').click(function () {
+                /*  alert(selectedEvent.bookingEmID + "EmID" + nowUserId + 'UsrID')*/
+                if (selectedEvent.bookingEmID == nowUserId) {
+                    oopenAddEditForm()
+                    /*   ReloadModal();*/
+                    $('#dataEdit').modal('hide');
+                    $('#Calendar-modal').modal('show');
+                } else {
+                    swal("您無法修改非本人預約", "請重新操作", "error")
+                }
+            })
+
+            //edit delete
+            $('#btnDelete').click(function () {        
+                if (selectedEvent.bookingEmID == nowUserId) { 
+                $('#dataEdit').modal('hide'); //toDo F12 calendarList
+                 $('#deletemodal').modal('setting', 'closable', false).modal('show');
+
+                    $('#deletedmodal').click(function () {
+                        //alert('selsectid' + selectedEvent.eventID)
+                        if (selectedEvent != null) {
+                            $.ajax({
+                                url: "/MeetingRoom/DeleteEvent",
+                                data: { 'eventID': selectedEvent.eventID },
+                                method: "POST",
+                                success: function (data) {
+                                    if (data.status) {
+                                        //refresh the calendar
+                                        EventRefresh();
+                                    }
+                                },
+                                error: function () { alert('failed'); },
+                            })  
+                        }
+                    })                 
+                } else { swal("您無法修改非本人預約", "請重新操作", "error") }
+            })
+
+            //check allday event change
+            $('#chboxisAllday').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#divEndDate').hide();
+                    /*  $('#startTime').; */
+                } else {
+                    $('#divEndDate').show();
+                }
+            });
+
+
+            // open Edit Form
+            function oopenAddEditForm() {
+                if (selectedEvent != null) {
+                    $('#hdeventID').val(selectedEvent.eventID);
+                    $('#MeetingRoomName').dropdown('set selected', selectedEvent.title);
+                    $('#startTime').val(selectedEvent.start.format('YYYY-MM-DD HH:mm a'));
+                    $('#MeetingSubject').val(selectedEvent.subject);
+                    $('#chboxisAllday').prop("checked", selectedEvent.allDay || false);
+                    $('#chboxisAllday').change();
+                    $('#endTime').val(selectedEvent.end != null ? selectedEvent.end.format('YYYY-MM-DD HH:mm a') : '');
+                    $('#Description').val(selectedEvent.description);
+                    /*  var eventattendee = selectedEvent.attendee;*/
+                    $('#dropdownmenu').dropdown('set selected', selectedEvent.attendee);
+              /*      $('#emNname').val(selectedEvent.name);*/
+                    $('#emId').val(`${document.cookie.split('id=')[1].split('&')[0]}`);
+                    $('#emNname').val(`${decodeURI(document.cookie.split('Name=')[1].split('&')[0])}`);   
+                }
+
+                /*alert(selectedEvent.allDay)*/
+                $('#dataEdit').modal('hide');
+                $('#Calendar-modal').modal('show');
+            }
+
+            //Send//
+            $('#txtSend').click(function () {
+
+
+                if ($('#MeetingRoomName').val().trim() == "") {
+                    swal("請選擇要預約的項目", "請重新操作", "error")
+                    return;
+                }
+                if ($('#startTime').val().trim() == "") {
+                    swal("請選擇開始時間", "請重新操作", "error")
+                    return;
+                }
+                if ($('#chboxisAllday').is(':checked') == false && $('#endTime').val().trim() == "") {
+                    swal("請選擇結束時間", "請重新操作", "error")
+                    return;
+                }
+                var startDate = moment($('#startTime').val(), 'YYYY-MM-DD HH:mm a').toDate();
+                var endDate = moment($('#endTime').val(), 'YYYY-MM-DD HH:mm a').toDate();
+                if (startDate > endDate) {
+                    swal("開始時間晚於結束時間", "請重新操作", "error")
+                    return;
+                }
+
+                else {
+                    $.ajax({
+                        type: "GET",
+                        url: "/MeetingRoom/CheckBooking",
+                        data: {
+                            "MeetingRoomName": $('#MeetingRoomName').val(),
+                            "BookingStartTime": $('#startTime').val().trim(),
+                            "BookingEndTime": $('#chboxisAllday').is(':checked') ? null : $('#endTime').val().trim(),
+                        },
+                        success: function (data) {
+                           /* console.log('checkeventboockingdata', data);*/
+                            if (data == false) {
+                                var data = {
+                                    MeetingRoomName: $('#MeetingRoomName').val(),
+                                    MeetingRemark: $('#Description').val(),
+                                    BookingStartTime: $('#startTime').val().trim(),
+                                    BookingEndTime: $('#chboxisAllday').is(':checked') ? null : $('#endTime').val().trim(),
+                                    MeetingSubject: $('#MeetingSubject').val().trim(),
+                                    MeetingAttentee: $('#attendee').val().trim(),
+                                    EmployeeID: $('#emId').val(),
+                                    中文姓名: $('#emNname').val(),
+                                    IsAllDay: $('#chboxisAllday').is(':checked'),
+                                    BookingId: $('#hdeventID').val(),
+                                    // status: v.Status,
+                                    //eventID: v.BookingId,
+                                }
+                                SaveEvent(data);
+                               /* console.log('savedata', data)*/
+                                clearAlltxt();
+                            } else {
+                                swal("您所選的資源及時段目前己被預訂", "請重新操作", "error")
+                                $('#Calendar-modal').modal('hide');
+                                EventRefresh();
+                            }
+                        },
+                        error: function (error) {
+                            alert("Reading failed")
+                        },
+                    })
+
+
+                    //end of expression of double booking
+                } // end of SaveEvent
+
+                //    var data = {
+                //        MeetingRoomName: $('#MeetingRoomName').val(),
+                //        MeetingRemark: $('#Description').val(),
+                //        BookingStartTime: $('#startTime').val().trim(),
+                //        BookingEndTime: $('#chboxisAllday').is(':checked') ? null : $('#endTime').val().trim(),
+                //        MeetingSubject: $('#MeetingSubject').val().trim(),
+                //        MeetingAttentee: $('#attendee').val().trim(),
+                //        EmployeeID: $('#emId').val(),
+                //        中文姓名: $('#emNname').val(),
+                //        IsAllDay: $('#chboxisAllday').is(':checked'),
+                //        BookingId: $('#hdeventID').val(),
+                //        // status: v.Status,
+                //        //eventID: v.BookingId,
+                //    }
+                //    SaveEvent(data);
+                ///*    console.log(data)*/
+                //    clearAlltxt();
+            })
+
+            function SaveEvent(data) {
+                $.ajax({
+                    url: "/MeetingRoom/SaveEvent",
+                    data: data,
+                    method: "POST",
+                    success: function (data) {
+                        if (data.status) {
+                            //refresh the calendar
+                            EventRefresh();
+                            $('#searchAll').prop('checked', true); //radiocheckboxAll
+                            $('#Calendar-modal').modal('hide'); //toDo F12 calendarList
+                            swal("成功！", "更新會議資訊", "success");
+                        }
+                    },
+                    error: function () { swal("編輯失敗！", "請重新更新會議資訊", "error") },
+                })
+            }
+
+            //Demo//
+            $('#txtDemo').click(function () {
+                $('#emId').val(`${document.cookie.split('id=')[1].split('&')[0]}`);
+                $('#emNname').val(`${decodeURI(document.cookie.split('Name=')[1].split('&')[0])}`);   
+                $('#MeetingRoomName').dropdown('set selected', '605會議室');
+                $('#Description').val('例行會議');
+                $('#startTime').val('2021-4-25 1:30 AM');
+                $('#endTime').val('2021-4-25 6:00 PM');
+                $('#MeetingSubject').val('業績報告');
+                $('#dropdownmenu').dropdown('set selected', 'stevie');
+            })
+
+
+        });
+
+    </script>
+}

@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @*引用Fontawesome*@
+    <link href="~/Content/fontawesome-all.css" rel="stylesheet" />
+    @*引用SweetAlert*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous"></script>
+    @*引用semantic*@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        body {
+            padding: 0;
+            background-color: #4F4F4F;
+        }
+        .TitleImg {
+            width: 200px;
+            height: 60px;
+        }
+        .LoginForm {
+            height: 100%;
+            width: 100%;
+            position:absolute;
+            margin-top:10%;           
+        }
+        .EIPLOGO {
+
+            width:75%;
+            height:75%;
+            margin-top:2%;
+           margin-right:5%;
+           margin-left:5%;
+           margin-bottom:2%;
+           padding-top:3%;
+            position: relative;
+        }
+        .Block2 {
+            border-left: 2px solid #7B7B7B;
+            padding-left: 3%;
+            padding-right:3%;
+            padding-bottom:3%;
+            padding-top:1%;
+            position: relative;
+        }
+        .container {
+            max-width: 100%;
+        }
+
+        .formbord {
+            border: 2px solid #9D9D9D;
+            border-radius: 15px 15px 15px 15px;
+            background-color: #9D9D9D;
+            width: 380px;
+            height: 450px;
+        }
+
+        .inputtext {
+            font-weight: bolder;
+            color: black;
+            margin-top:30px;
+        }
+        .disapear {
+             opacity:0;
+        }
+        .centermodal {
+            height: auto;
+            top: auto;
+            left: auto;
+            bottom: auto;
+            right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div>
+
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery.signalR-2.4.1.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+    @RenderSection("script", required: false)
+</body>
+</html>

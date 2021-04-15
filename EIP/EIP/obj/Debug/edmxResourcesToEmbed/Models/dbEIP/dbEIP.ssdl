@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbEIPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="eipProjectDetail">
+    <Key>
+      <PropertyRef Name="pjId" />
+    </Key>
+    <Property Name="pjId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pjName" Type="nvarchar" MaxLength="50" />
+    <Property Name="pjManager" Type="nvarchar" MaxLength="50" />
+    <Property Name="pjDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="pjContent專案內容" Type="nvarchar" MaxLength="50" />
+    <Property Name="pjPV預算" Type="nvarchar" MaxLength="50" />
+    <Property Name="pjAC實際成本" Type="nvarchar" MaxLength="50" />
+    <Property Name="pjEV淨利" Type="nvarchar" MaxLength="50" />
+    <Property Name="pjReviewAcceptOrNot1" Type="int" />
+    <Property Name="pjReviewAcceptOrNot2" Type="int" />
+    <Property Name="pjReviewAcceptOrNot3" Type="int" />
+    <Property Name="pjReviewLevel" Type="int" />
+    <Property Name="pjReviewAdvise1" Type="nvarchar" MaxLength="50" />
+    <Property Name="pjReviewAdvise2" Type="nvarchar" MaxLength="50" />
+    <Property Name="pjReviewAdvise3" Type="nvarchar" MaxLength="50" />
+    <Property Name="pj廠商投標金額" Type="money" />
+    <Property Name="pj項目" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="MeetingRoom">
+    <Key>
+      <PropertyRef Name="MeetingRoomId" />
+    </Key>
+    <Property Name="MeetingRoomId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MeetingRoomName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="RoomPic" Type="image" />
+  </EntityType>
+  <EntityType Name="MeetingRoomBooking">
+    <Key>
+      <PropertyRef Name="BookingId" />
+    </Key>
+    <Property Name="BookingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeID" Type="int" />
+    <Property Name="中文姓名" Type="nvarchar" MaxLength="50" />
+    <Property Name="BookingDate" Type="datetime" />
+    <Property Name="BookingStartTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="BookingEndTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="MeetingRoomId" Type="int" />
+    <Property Name="MeetingRoomName" Type="nvarchar" MaxLength="50" />
+    <Property Name="MeetingRemark" Type="nvarchar(max)" />
+    <Property Name="MeetingSubject" Type="nvarchar(max)" />
+    <Property Name="MeetingAttentee" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="projectTeam">
+    <Key>
+      <PropertyRef Name="pjDailyReport" />
+    </Key>
+    <Property Name="pjDailyReport" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pjTeam" Type="nvarchar" MaxLength="50" />
+    <Property Name="pjId" Type="int" />
+    <Property Name="employeeID" Type="int" />
+    <Property Name="pjJob" Type="nvarchar" MaxLength="20" />
+    <Property Name="pj人數" Type="int" />
+    <Property Name="pj開始時間" Type="int" />
+    <Property Name="pj結束時間" Type="int" />
+    <Property Name="pj工作內容" Type="nvarchar" MaxLength="50" />
+    <Property Name="pj工作時間" Type="int" />
+    <Property Name="pj填表日期" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="加班別">
+    <Key>
+      <PropertyRef Name="加班ID" />
+    </Key>
+    <Property Name="加班ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="加班類別" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="加班細項">
+    <Key>
+      <PropertyRef Name="加班表編號" />
+    </Key>
+    <Property Name="加班表編號" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeID" Type="int" Nullable="false" />
+    <Property Name="中文姓名" Type="nvarchar" MaxLength="50" />
+    <Property Name="部門" Type="nvarchar" MaxLength="50" />
+    <Property Name="加班ID" Type="int" />
+    <Property Name="已用可用" Type="int" />
+    <Property Name="開始日期" Type="datetime" />
+    <Property Name="結束日期" Type="datetime" />
+    <Property Name="加班時數" Type="int" />
+    <Property Name="事由說明" Type="nvarchar" MaxLength="50" />
+    <Property Name="主管簽核" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="行事曆">
+    <Key>
+      <PropertyRef Name="EventID" />
+    </Key>
+    <Property Name="EventID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Subject" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="Start" Type="datetime" Nullable="false" />
+    <Property Name="End" Type="datetime" />
+    <Property Name="ThemeColor" Type="nchar" MaxLength="10" />
+    <Property Name="IsFullDay" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="佈告欄">
+    <Key>
+      <PropertyRef Name="佈告欄ID" />
+    </Key>
+    <Property Name="佈告欄ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeID" Type="int" Nullable="false" />
+    <Property Name="中文姓名" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="佈告欄標題" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="佈告欄內容" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="發布日期" Type="datetime" Nullable="false" />
+    <Property Name="總筆數" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="表單類別">
+    <Key>
+      <PropertyRef Name="表單類別" />
+    </Key>
+    <Property Name="表單類別" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="表單選項" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="個人資料">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeePW" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="受雇日期" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="中文姓名" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="英文姓名" Type="nvarchar" MaxLength="50" />
+    <Property Name="職稱" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="狀態" Type="nvarchar" MaxLength="50" />
+    <Property Name="部門" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="性別" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="出生年月日" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="信箱" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="電話" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="居住地" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="婚姻狀況" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="年資" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="薪資" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="特休" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="權限" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="假別">
+    <Key>
+      <PropertyRef Name="假別ID" />
+    </Key>
+    <Property Name="假別ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="假別" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="請假細項">
+    <Key>
+      <PropertyRef Name="申請表編號" />
+    </Key>
+    <Property Name="申請表編號" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeID" Type="int" Nullable="false" />
+    <Property Name="信箱" Type="nvarchar" MaxLength="50" />
+    <Property Name="部門" Type="nvarchar" MaxLength="50" />
+    <Property Name="假別ID" Type="int" />
+    <Property Name="請假班別" Type="nvarchar" MaxLength="50" />
+    <Property Name="請假時數" Type="int" />
+    <Property Name="開始日期" Type="datetime" />
+    <Property Name="結束日期" Type="datetime" />
+    <Property Name="申請日期" Type="datetime" />
+    <Property Name="代理人" Type="nvarchar" MaxLength="50" />
+    <Property Name="審核狀態" Type="nvarchar" MaxLength="50" />
+    <Property Name="中文姓名" Type="nvarchar" MaxLength="50" />
+    <Property Name="職稱" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_projectTeam_eipProjectDetail">
+    <End Role="eipProjectDetail" Type="Self.eipProjectDetail" Multiplicity="0..1" />
+    <End Role="projectTeam" Type="Self.projectTeam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="eipProjectDetail">
+        <PropertyRef Name="pjId" />
+      </Principal>
+      <Dependent Role="projectTeam">
+        <PropertyRef Name="pjId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_projectTeam_個人資料">
+    <End Role="個人資料" Type="Self.個人資料" Multiplicity="0..1" />
+    <End Role="projectTeam" Type="Self.projectTeam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="個人資料">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="projectTeam">
+        <PropertyRef Name="employeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_加班細項_加班別">
+    <End Role="加班別" Type="Self.加班別" Multiplicity="0..1" />
+    <End Role="加班細項" Type="Self.加班細項" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="加班別">
+        <PropertyRef Name="加班ID" />
+      </Principal>
+      <Dependent Role="加班細項">
+        <PropertyRef Name="加班ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_請假細項_假別">
+    <End Role="假別" Type="Self.假別" Multiplicity="0..1" />
+    <End Role="請假細項" Type="Self.請假細項" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="假別">
+        <PropertyRef Name="假別ID" />
+      </Principal>
+      <Dependent Role="請假細項">
+        <PropertyRef Name="假別ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dbEIPModelStoreContainer">
+    <EntitySet Name="eipProjectDetail" EntityType="Self.eipProjectDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MeetingRoom" EntityType="Self.MeetingRoom" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MeetingRoomBooking" EntityType="Self.MeetingRoomBooking" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="projectTeam" EntityType="Self.projectTeam" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="加班別" EntityType="Self.加班別" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="加班細項" EntityType="Self.加班細項" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="行事曆" EntityType="Self.行事曆" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="佈告欄" EntityType="Self.佈告欄" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="表單類別" EntityType="Self.表單類別" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="個人資料" EntityType="Self.個人資料" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="假別" EntityType="Self.假別" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="請假細項" EntityType="Self.請假細項" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_projectTeam_eipProjectDetail" Association="Self.FK_projectTeam_eipProjectDetail">
+      <End Role="eipProjectDetail" EntitySet="eipProjectDetail" />
+      <End Role="projectTeam" EntitySet="projectTeam" />
+    </AssociationSet>
+    <AssociationSet Name="FK_projectTeam_個人資料" Association="Self.FK_projectTeam_個人資料">
+      <End Role="個人資料" EntitySet="個人資料" />
+      <End Role="projectTeam" EntitySet="projectTeam" />
+    </AssociationSet>
+    <AssociationSet Name="FK_加班細項_加班別" Association="Self.FK_加班細項_加班別">
+      <End Role="加班別" EntitySet="加班別" />
+      <End Role="加班細項" EntitySet="加班細項" />
+    </AssociationSet>
+    <AssociationSet Name="FK_請假細項_假別" Association="Self.FK_請假細項_假別">
+      <End Role="假別" EntitySet="假別" />
+      <End Role="請假細項" EntitySet="請假細項" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

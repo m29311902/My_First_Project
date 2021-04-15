@@ -1,0 +1,272 @@
+﻿@{
+    ViewBag.Title = "員工登入系統";
+    Layout = "~/Views/Shared/LoginLayout.cshtml";
+}
+
+
+<div class="d-flex">
+    <button class="ui black button mt-2 ml-2 demo5 disapear w-50">
+        <i class="icon sign-in"></i>
+        顯示Demo鍵
+    </button>
+    <button class="ui black button mt-2 ml-2 demo4 disapear w-50">
+        <i class="icon sign-in"></i>
+        隱藏Demo鍵
+    </button>
+
+</div>
+<div class="ui mini modal forgetpwmodal centermodal">
+    <i class="close icon"></i>
+    <div class="header">
+        忘記密碼
+    </div>
+    <div class="content">
+        <form class="ui form">
+            <div class="field">
+                <label>員工編號：</label>
+                <input type="text" class="EmpID" name="EmpID" placeholder="員工編號..." onkeyup="return ValidateNumber($(this),value)" maxlength="5">
+                <div class="valiempid"></div>
+            </div>
+            <div class="field">
+                <label>帳號：</label>
+                <input type="text" class="EmpEmail" name="ACCtext" placeholder="Email...">
+            </div>
+            <div class="actions">
+                <div class="ui inverted red button cancel">取消</div>
+                <div class="ui inverted primary button reqsendpw" onclick="sendchpwreq()">確認發送</div>
+                <div class="ui inverted green button demoforget">DEMO</div>
+                @*<button class="ui inverted primary loading button reqsendpwloading" hidden>確認發送</button>*@
+            </div>
+        </form>
+
+    </div>
+   
+</div>
+<div class="LoginForm ">
+    <div class="w-100 border-top"></div>
+    <div class="d-flex">
+        <div class="EIPLOGO">
+            <img class="w-100 h-100" src="~/images/Logo.png" />
+        </div>
+        <div class="Block2">
+            <div>
+                <button class="ui black button w-25  mt-2 demo1">
+                    <i class="icon sign-in"></i>
+                    主管
+                </button>
+                <button class="ui black button w-25 demo6">
+                    <i class="icon sign-in"></i>
+                    主管
+                </button>
+                <button class="ui black button w-25 mt-2 demoforgetemail text-nowrap">
+                    <i class="icon sign-in"></i>
+                    忘記密碼
+                </button>
+            </div>
+            <button class="ui black button w-25 mt-2 demo2">
+                <i class="icon sign-in"></i>
+                人事
+            </button>
+            <button class="ui black button w-25 mt-2 demo3">
+                <i class="icon sign-in"></i>
+                員工
+            </button>
+            <button class="ui black button w-25 mt-2 demonew">
+                <i class="icon sign-in"></i>
+                新員工
+            </button>
+            <button class="ui black button w-50 mt-2 demo資訊主管">
+                <i class="icon sign-in"></i>
+                主管(資)
+            </button>
+            <button class="ui black button w-50 mt-2 demo資訊員工">
+                <i class="icon sign-in"></i>
+                員工(資)
+            </button>
+            <form class="FormLogin px-4 py-4 formbord ui form mt-5">
+                <div>
+                    <div class="field ui massive label d-flex justify-content-center">
+                        <i class="user outline icon"></i>員工登入系統
+                    </div>
+                    <div class="field">
+                        <label class="inputtext ">帳號：</label>
+                        <div class="ui left icon input">
+                            <input type="text" placeholder="E-mail..." class="ACCtext" name="ACCtext">
+                            <i class="user icon"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="inputtext mt-5">密碼：</label>
+                        <div class="ui left icon input">
+                            <input class="PWtext" name="PWtext" type="password" placeholder="Password..." />
+                            <i class="key icon"></i>
+                        </div>
+                    </div>
+                    <div class="mt-5 d-flex justify-content-between">
+                        <input type="checkbox" class="mt-1 mr-1" />
+                        <label class="RememberME font-weight-bolder mr-5">記住我</label>
+                        <div class="ui inverted secondary button w-50 ml-5 mb-2" onclick="showforgetpwmodal()">
+                            <span class="mr-2">忘記密碼</span><i class="blue icon question"></i>
+                        </div>
+                    </div>
+                    <div class="form-group mt-2">
+                        <button class="ui black button w-100 btnSend mt-2">
+                            <i class="icon sign-in"></i>
+                            登入
+                        </button>
+                        <input type="reset" class="resetform" hidden />
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div class="bottomblock w-100 border-top"></div>
+</div>
+
+
+@section script{
+    <script>
+        $(".demoforgetemail").click(function () {
+            $(".ACCtext").val('hu999123000@gmail.com');
+        });
+        $(".demoforget").click(() => {
+            $(".EmpID").val('14');
+            $(".EmpEmail").val('hu999123000@gmail.com');
+        })
+        $(".demo1").click(function () {
+            $(".ACCtext").val('boss@gmail.com');
+            $(".PWtext").val('123456');
+        });
+        $(".demo6").click(function () {
+            $(".ACCtext").val('SanchezTan@yahoo.com.tw');
+            $(".PWtext").val('123456');
+        });
+        $(".demo2").click(function () {
+        /* $(".ACCtext").val('hu999123000@gmail.com');*/
+            $(".ACCtext").val('PaulHan@rhyta.com');           
+            $(".PWtext").val('123456');
+        });
+        $(".demo3").click(function () {
+            $(".ACCtext").val('brettHo@gmail.com');
+            $(".PWtext").val('123456');
+        });
+        $(".demonew").click(function () {
+            $(".ACCtext").val('chichi77@gmail.com');
+            $(".PWtext").val('Aa0245!');
+        });
+        $(".demo4").click(function () {
+            $(".demo1").attr('hidden', false);
+            $(".demo2").attr('hidden', false);
+            $(".demo3").attr('hidden', false);
+            $(".demo6").attr('hidden', false);
+            $(".demonew").attr('hidden', false);     
+            $(".demo資訊員工").attr('hidden', false);
+            $(".demo資訊主管").attr('hidden', false);           
+            $(".demoforgetemail").attr('hidden', false);
+        });
+        $(".demo5").click(function () {      
+            $(".demo1").attr('hidden', true);
+            $(".demo2").attr('hidden', true);
+            $(".demo3").attr('hidden', true);
+            $(".demo6").attr('hidden', true);
+            $(".demonew").attr('hidden', true);
+            $(".demo資訊員工").attr('hidden', true);
+            $(".demo資訊主管").attr('hidden', true);
+            $(".demoforgetemail").attr('hidden', true);
+        });
+        $(".demo資訊主管").click(function () {
+            $(".ACCtext").val('kennethfu@gmail.com');
+            $(".PWtext").val('123456');
+        });
+        $(".demo資訊員工").click(function () {
+            $(".ACCtext").val('juanzhuang@icloud.com');
+            $(".PWtext").val('123456');
+        });
+        $(".btnSend").click(function () {
+            event.preventDefault();
+            $.ajax({
+                url: "/Home/AccPwCheck",
+                data: {
+                    "信箱": $(".ACCtext").val(),
+                    "EmployeePW": $(".PWtext").val(),
+                    "記住我": $(".RememberME").val()
+                },
+                method: "get",
+                success: function (data) {
+                    if (data.status != "") {
+                        setTimeout(function () { window.location.href = "/Home/Index"; }, 1000);
+                        swal("登入成功", "請稍後...", "success");
+                    } else {
+                        $(".resetform").click();
+                        swal("登入失敗", "帳號或密碼錯誤,請重新登入...", "error");
+                    }
+                }
+            })
+
+        });
+
+
+        function showforgetpwmodal() {
+            $(".forgetpwmodal").modal('show');
+
+        };
+
+        function checkloading() {
+            if ($(".reqsendpw").click()) {
+                $(".reqsendpw").attr('hidden', true);
+                $(".reqsendpwloading").attr('hidden', false);
+            } else {
+                $(".reqsendpw").attr('hidden', false);
+                $(".reqsendpwloading").attr('hidden', true);
+            }
+
+        }
+        function sendchpwreq() {          
+            if ($(".EmpEmail").val() == "" || $(".EmpID").val() == "") {
+                $(".EmpEmail").val("");
+                $(".EmpID").val("");
+                swal("密碼重置", "欄位請勿留空...", "error");
+            }    
+                      $.ajax({
+                          url: "/Home/sendGmail",
+                          data: {
+                              "信箱": $(".EmpEmail").val(),
+                              "員工編號": $(".EmpID").val()                            
+                          },
+                          method: "get",
+                          success: function (data) {
+                              if (data == "員工編號與帳號不符合!,請重新輸入！") {
+                                  swal("密碼重置", "員工編號與帳號有誤!請重新在試...", "error");
+                                  $(".EmpEmail").val("");
+                                  $(".EmpID").val("");
+                                  $(".forgetpwmodal").modal('hide');
+                              } else {                    
+                                  swal('密碼重置', `密碼已為您變更並寄送至您的信箱... \r\n請於登入後盡速修改個人密碼!`, 'warning');
+                                  $(".EmpEmail").val("");
+                                  $(".EmpID").val("");
+                                  $(".forgetpwmodal").modal('hide');
+                              }
+                            
+                          }
+      
+                });   
+       
+        }
+
+        //檢驗員工編號是否為int
+        function ValidateNumber(e, empid) {
+            if (!/^\d+$/.test(empid)) {
+                $(e).val(/^\d+/.exec($(e).val()));   
+                $(".valiempid").html(`<span class="text-danger">請輸入正確的員工編號<i class="exclamation icon red"></i></span>`);
+            }
+            else {
+                $(".valiempid").html("");
+                return false;
+            }
+        }
+
+
+
+    </script>
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="38b217bd847d44beae00f30cb35e52b9" Name="Diagram1">
+        <EntityTypeShape EntityType="dbEIPModel.MeetingRoom" Width="1.5" PointX="5.75" PointY="15.75" />
+        <EntityTypeShape EntityType="dbEIPModel.MeetingRoomBooking" Width="1.5" PointX="7.75" PointY="15.75" />
+        <EntityTypeShape EntityType="dbEIPModel.pjAdvice" Width="1.5" PointX="3" PointY="1.625" />
+        <EntityTypeShape EntityType="dbEIPModel.pjHandOverList" Width="1.5" PointX="10.75" PointY="5.75" />
+        <EntityTypeShape EntityType="dbEIPModel.pjMeeting" Width="1.5" PointX="3" PointY="8.5" />
+        <EntityTypeShape EntityType="dbEIPModel.pjOverall" Width="1.5" PointX="3" PointY="11.375" />
+        <EntityTypeShape EntityType="dbEIPModel.pjProject" Width="1.5" PointX="0.75" PointY="8" />
+        <EntityTypeShape EntityType="dbEIPModel.pjReport" Width="1.5" PointX="3" PointY="4.375" />
+        <EntityTypeShape EntityType="dbEIPModel.pjTeam" Width="1.5" PointX="3" PointY="15.5" />
+        <EntityTypeShape EntityType="dbEIPModel.pj建立" Width="1.5" PointX="8" PointY="6.125" />
+        <EntityTypeShape EntityType="dbEIPModel.pj控管" Width="1.5" PointX="8" PointY="1.125" />
+        <EntityTypeShape EntityType="dbEIPModel.pj結案" Width="1.5" PointX="8" PointY="12" />
+        <EntityTypeShape EntityType="dbEIPModel.pj進度表" Width="1.5" PointX="5.75" PointY="1" />
+        <EntityTypeShape EntityType="dbEIPModel.pj會議" Width="1.5" PointX="8" PointY="9.5" />
+        <EntityTypeShape EntityType="dbEIPModel.pj會議記錄" Width="1.5" PointX="5.75" PointY="9.5" />
+        <EntityTypeShape EntityType="dbEIPModel.pj團隊" Width="1.5" PointX="15.75" PointY="9.75" />
+        <EntityTypeShape EntityType="dbEIPModel.pj總表" Width="1.5" PointX="10.25" PointY="1.125" />
+        <EntityTypeShape EntityType="dbEIPModel.出差細項" Width="1.5" PointX="9.75" PointY="15.75" />
+        <EntityTypeShape EntityType="dbEIPModel.加班別" Width="1.5" PointX="12.75" PointY="5.75" />
+        <EntityTypeShape EntityType="dbEIPModel.加班細項" Width="1.5" PointX="15" PointY="5" />
+        <EntityTypeShape EntityType="dbEIPModel.打卡系統" Width="1.5" PointX="11.75" PointY="15.75" />
+        <EntityTypeShape EntityType="dbEIPModel.行事曆" Width="1.5" PointX="13.75" PointY="15.75" />
+        <EntityTypeShape EntityType="dbEIPModel.佈告欄" Width="1.5" PointX="15.75" PointY="14.75" />
+        <EntityTypeShape EntityType="dbEIPModel.表單類別" Width="1.5" PointX="17.75" PointY="0.75" />
+        <EntityTypeShape EntityType="dbEIPModel.個人資料" Width="1.5" PointX="17.75" PointY="3.75" />
+        <EntityTypeShape EntityType="dbEIPModel.假別" Width="1.5" PointX="10.75" PointY="11.375" />
+        <EntityTypeShape EntityType="dbEIPModel.通知" Width="1.5" PointX="15" PointY="0.875" />
+        <EntityTypeShape EntityType="dbEIPModel.通知類別" Width="1.5" PointX="12.75" PointY="1.25" />
+        <EntityTypeShape EntityType="dbEIPModel.請假細項" Width="1.5" PointX="13" PointY="10" />
+        <AssociationConnector Association="dbEIPModel.FK_pjAdvice_pjProject" />
+        <AssociationConnector Association="dbEIPModel.FK_pjHandOverList_pjHandOverList" />
+        <AssociationConnector Association="dbEIPModel.FK_pjMeeting_pjProject" />
+        <AssociationConnector Association="dbEIPModel.FK_pjOverall_pjProject" />
+        <AssociationConnector Association="dbEIPModel.FK_pjReport_pjProject" />
+        <AssociationConnector Association="dbEIPModel.FK_pjTeam_pjProject" />
+        <AssociationConnector Association="dbEIPModel.FK_pj總表_pj建立" />
+        <AssociationConnector Association="dbEIPModel.FK_pj控管_pj進度表" />
+        <AssociationConnector Association="dbEIPModel.FK_pj總表_pj控管" />
+        <AssociationConnector Association="dbEIPModel.FK_pj總表_pj結案" />
+        <AssociationConnector Association="dbEIPModel.FK_pj會議_pj會議記錄" />
+        <AssociationConnector Association="dbEIPModel.FK_pj總表_pj會議" />
+        <AssociationConnector Association="dbEIPModel.FK_加班細項_加班別" />
+        <AssociationConnector Association="dbEIPModel.FK_請假細項_假別" />
+        <AssociationConnector Association="dbEIPModel.FK_通知_通知類別" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
